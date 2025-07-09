@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="assets/loginStyle.css">
+</head>
+<body class="login-page">
+    <header class="login-header">
+        <div class="logo">Python<span>Learn</span></div>
+        <div class="nav">
+            <a href="login.html" class="signup-btn">Log In</a>
+        </div>
+    </header>
+
+    <main class="login-container">
+        <h1>Create your account</h1>
+        <p class="required-note">* Required</p>
+        <form method="post" class="login-form">
+            <label for="username">Username<span class="required">*</span></label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email<span class="required">*</span></label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password<span class="required">*</span></label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm-password">Confirm Password<span class="required">*</span></label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+
+            <button type="submit" class="login-btn">Sign Up</button>
+        </form>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $(".login-form").on("submit", function (e) {
+            const username = $("#username").val().trim();
+            const email = $("#email").val().trim();
+            const password = $("#password").val();
+            const confirmPassword = $("#confirm-password").val();
+
+            if (!username || !email || !password || !confirmPassword) {
+                alert("Please fill in all required fields.");
+                e.preventDefault();
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                e.preventDefault();
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                e.preventDefault();
+                return;
+            }
+        });
+
+        $.ajax({
+            url: "http://localhost:3000/auth/register",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ username, email, password }),
+            success: function(res) {
+                alert("Account created!");
+                window.location.href = "login.html";
+            },
+            error: function(err) {
+                alert(err.responseJSON.message || "Registration failed");
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="assets/loginStyle.css">
+</head>
+<body class="login-page">
+    <header class="login-header">
+        <div class="logo">Python<span>Learn</span></div>
+        <div class="nav">
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="login-container">
+        <h1>Log in to PythonLearn</h1>
+        <p class="required-note">* Required</p>
+        <form method="post" class="login-form">
+            <label for="login">Username<span class="required">*</span></label>
+            <input type="text" id="login" name="login" required>
+
+            <label for="password">Password<span class="required">*</span></label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="login-btn">Log in</button>
+        </form>
+    </main>
+    <script>
+        $(".login-form").on("submit", function(e) {
+            e.preventDefault();
+        
+            const email = $("#email").val();
+            const password = $("#password").val();
+        
+            $.ajax({
+                url: "http://localhost:3000/auth/login",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ email, password }),
+                success: function(res) {
+                    localStorage.setItem("token", res.token);
+                    alert("Logged in!");
+                    window.location.href = "dashboard.html";
+                },
+                error: function(err) {
+                    alert(err.responseJSON.message || "Login failed");
+                }
+            });
+        });
+        </script>
+        
+</body>
+</html>
