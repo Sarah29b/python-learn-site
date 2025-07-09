@@ -15,6 +15,11 @@ app.use('/auth', authRoutes); //On connecte le routeur authRoutes au chemin /aut
 const PORT = process.env.PORT || 3000; //On récupère le port à utiliser à partir du fichier .env.
 //S’il n’est pas défini, on utilise 3000 par défaut.
 
-app.listen(PORT, () => {
+app.get('/', (req, res) => {
+  res.send('Bienvenue sur Python Learn Site 🚀');
+});
+
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
