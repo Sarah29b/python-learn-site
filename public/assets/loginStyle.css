@@ -5,7 +5,7 @@ body {
     color: #1a1a1a;
 }
 
-.login-header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,14 +37,14 @@ body {
     font-size: 14px;
 }
 
-.login-container {
+main {
     max-width: 400px;
     margin: 60px auto;
     background-color: transparent;
     padding: 20px;
 }
 
-.login-container h1 {
+main h1 {
     font-size: 24px;
     margin-bottom: 10px;
 }
@@ -54,19 +54,19 @@ body {
     color: #444;
 }
 
-.login-form {
+form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.login-form label {
+form label {
     font-weight: bold;
     margin-bottom: 4px;
 }
 
-.login-form input[type="text"],
-.login-form input[type="password"] {
+form input[type="text"],
+form input[type="password"] {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
