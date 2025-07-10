@@ -60,7 +60,7 @@
 
         // AJAX request après validation
         $.ajax({
-            url: "http://localhost:3000/auth/register",
+            url: "/auth/register",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ username, email, password }),
