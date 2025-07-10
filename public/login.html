@@ -4,26 +4,6 @@
     <title>Login</title>
     <link rel="stylesheet" href="assets/loginStyle.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <header>
-        <div class="logo">Python<span>Learn</span></div>
-        <div class="nav">
-            <a href="register.html" class="signup-btn">Sign Up</a>
-        </div>
-    </header>
-
-    <main>
-        <h1>Log in to PythonLearn</h1>
-        <p class="required-note">* Required</p>
-        <form method="POST" class="login-form">
-            <label for="login">Username<span class="required">*</span></label>
-            <input type="text" id="login" name="login" required>
-            <label for="password">Password<span class="required">*</span></label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit" class="login-btn">Log in</button>
-        </form>
-    </main>
     <script>
         $(document).ready(function() {
             $(".login-form").on("submit", function(e) {
@@ -48,7 +28,26 @@
                 });
             });
         });
-        </script>
-        
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">Python<span>Learn</span></div>
+        <div class="nav">
+            <a href="register.html" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Log in to PythonLearn</h1>
+        <p class="required-note">* Required</p>
+        <form method="POST" class="login-form">
+            <label for="login">Username<span class="required">*</span></label>
+            <input type="text" id="login" name="login" required>
+            <label for="password">Password<span class="required">*</span></label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="login-btn">Log in</button>
+        </form>
+    </main>
 </body>
 </html>
