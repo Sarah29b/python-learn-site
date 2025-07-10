@@ -8,11 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 // CORRECTION ICI : utiliser chemin absolu correct
-const publicPath = path.join(process.cwd(), 'public');
+const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile('index.html', { root: publicPath });
 });
 
 const authRoutes = require('./routes/auth');
