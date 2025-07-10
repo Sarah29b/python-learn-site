@@ -27,17 +27,17 @@ const registerUser = async (req, res) => {
 
 // 🔑 Connexion
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     if (user.rows.length === 0) {
-      return res.status(400).json({ error: 'Email non trouvé.' });
+      return res.status(400).json({ error: 'username not found.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.rows[0].password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'Mot de passe incorrect.' });
+      return res.status(401).json({ error: 'password incorrect.' });
     }
 
     res.status(200).json({
