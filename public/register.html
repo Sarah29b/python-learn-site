@@ -34,32 +34,31 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function () {
-        $(".login-form").on("submit", function (e) {
-            const username = $("#username").val().trim();
-            const email = $("#email").val().trim();
-            const password = $("#password").val();
-            const confirmPassword = $("#confirm-password").val();
+    $(".login-form").on("submit", function (e) {
+        e.preventDefault(); // ← Empêche l'envoi du formulaire vers register.html
 
-            if (!username || !email || !password || !confirmPassword) {
-                alert("Please fill in all required fields.");
-                e.preventDefault();
-                return;
-            }
+        const username = $("#username").val().trim();
+        const email = $("#email").val().trim();
+        const password = $("#password").val();
+        const confirmPassword = $("#confirm-password").val();
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match.");
-                e.preventDefault();
-                return;
-            }
+        if (!username || !email || !password || !confirmPassword) {
+            alert("Please fill in all required fields.");
+            return;
+        }
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert("Please enter a valid email address.");
-                e.preventDefault();
-                return;
-            }
-        });
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // AJAX request après validation
         $.ajax({
             url: "http://localhost:3000/auth/register",
             method: "POST",
@@ -70,10 +69,12 @@
                 window.location.href = "login.html";
             },
             error: function(err) {
-                alert(err.responseJSON.message || "Registration failed");
+                alert(err.responseJSON?.error || "Registration failed");
             }
         });
     });
+});
+
     </script>
 </body>
 </html>
