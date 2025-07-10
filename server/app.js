@@ -13,7 +13,7 @@ app.use(express.static('../public'));
 
 app.get('/', (req, res) => {
   res.send(__dirname);
-  res.sendFile(__dirname + '../public/index.html');
+  res.sendFile('../public/index.html');
 });
 
 const authRoutes = require('./routes/auth'); //On importe les routes d’authentification 
