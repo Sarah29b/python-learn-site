@@ -16,11 +16,11 @@
                     url: "/auth/login",
                     method: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({ email, password }),
+                    data: JSON.stringify({ username, password }),
                     success: function(res) {
-                        //localStorage.setItem("token", res.token);
+                        localStorage.setItem("token", res.token);
                         alert("Logged in!");
-                        window.location.href = "index.html";
+                        window.location.href = "app.html";
                     },
                     error: function(err) {
                         alert(err.responseJSON.message || "Login failed");
