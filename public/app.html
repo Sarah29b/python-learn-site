@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercises</title>
+</head>
+<body>
+  <h1>Exercises available</h1>
+  <ul id="exo-list">Loading...</ul>
+
+  <script>
+    async function loadExercises() {
+      try {
+        const res = await fetch('/api/exercises');
+        const data = await res.json();
+
+        const list = document.getElementById('exo-list');
+        list.innerHTML = '';
+
+        data.forEach(exo => {
+          const li = document.createElement('li');
+          li.textContent = `#${exo.id} - ${exo.title}`;
+          list.appendChild(li);
+        });
+
+      } catch (err) {
+        document.getElementById('exo-list').textContent = 'Error while loading.';
+        console.error(err);
+      }
+    }
+
+    window.onload = loadExercises;
+  </script>
+</body>
+</html>
