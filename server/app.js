@@ -15,6 +15,10 @@ const authRoutes = require('./routes/auth'); //On importe les routes d’authent
 //(register/login), définies dans le fichier routes/auth.js.
 app.use('/auth', authRoutes); //On connecte le routeur authRoutes au chemin /auth.
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
 const PORT =  3000; //On récupère le port à utiliser à partir du fichier .env.
 //S’il n’est pas défini, on utilise 3000 par défaut.
 
