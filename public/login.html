@@ -31,7 +31,7 @@
             const password = $("#password").val();
         
             $.ajax({
-                url: "http://localhost:3000/auth/login",
+                url:  "/auth/register",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({ email, password }),
