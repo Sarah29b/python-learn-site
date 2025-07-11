@@ -3,16 +3,15 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="assets/loginStyle.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function () {
-    $(".login-form").on("submit", function (e) {
-        e.preventDefault(); // ← Empêche l'envoi du formulaire vers register.html
+        document.getElementById("login-form").addEventListener("submit", async function (e) {
+        e.preventDefault(); 
 
-        const username = $("#username").val().trim();
-        const email = $("#email").val().trim();
-        const password = $("#password").val();
-        const confirmPassword = $("#confirm-password").val();
+        const username = document.getElementById("username").value.trim;
+        const email = document.getElementById("email").value.trim;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
 
         if (!username || !email || !password || !confirmPassword) {
             alert("Please fill in all required fields.");
@@ -30,22 +29,29 @@
             return;
         }
 
-        // AJAX request après validation
-        $.ajax({
-            url: "/auth/register",
+        try{
+            fetch("/auth/register", {
             method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ username, email, password }),
-            success: function(res) {
-                alert("Account created!");
-                window.location.href = "login.html";
+            headers: {
+                "Content-Type": "application/json"
             },
-            error: function(err) {
-                alert(err.responseJSON?.error || "Registration failed");
-            }
-        });
+            body: JSON.stringify({ username, email, password }),
+        })
+
+        if (!response.ok) {
+        throw new Error(data.error || "Registration failed");
+        }
+
+        alert("Account created !");
+        window.location.href = "login.html";
+        }
+    
+        catch (err) {
+        alert(err.message);
+        console.error("Register error :", err);
+        }
+
     });
-});
     </script>
 </head>
 <body>
