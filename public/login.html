@@ -27,7 +27,7 @@
             }
             localStorage.setItem("token", data.token);
             alert("Logged in!");
-            window.location.href = "index.html";
+            window.location.href = "app.html";
             } catch (err) {
                 alert(err.message);
                 console.error("Login error:", err);
@@ -47,7 +47,7 @@
     <main>
         <h1>Log in to PythonLearn</h1>
         <p class="required-note">* Required</p>
-        <form id="login-form">
+        <form method = "POST" id="login-form">
             <label for="username">Username<span class="required">*</span></label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password<span class="required">*</span></label>
