@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const bodyP = require("body-parser");
-const compiler = require('compilex');
 const options = { stats: true };
 compiler.init(options);
 require('dotenv').config();
