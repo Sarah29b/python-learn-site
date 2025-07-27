@@ -20,7 +20,7 @@ $(document).ready(function(){
             code:editor.getValue(),
             input:input.value
         }
-        var oData=await fetch("http://localhost:3000/compile",{
+        var oData=await fetch("/compile",{
             method:"POST",
             headers:{
                 "Content-Type": "application/json"
