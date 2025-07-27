@@ -1,0 +1,116 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fc;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.title {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  align-items: center;
+}
+
+h2 {
+  color: #333;
+}
+
+hr {
+  margin: 20px 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 5px;
+  text-align: left; /* ← Ajout clé */
+}
+
+
+.decouverte {
+  background-color: #ffeb99;
+  color: #333;
+  border: 1px solid #e6c200;
+}
+
+.cours {
+  background-color: #f4c7ab;
+  color: #333;
+  border: 1px solid #d68c60;
+}
+
+.entrainement {
+  background-color: #eeeeee;
+  color: #333;
+  border: 1px solid #bbb;
+}
+
+.validation {
+  background-color: #b8e6b0;
+  color: #333;
+  border: 1px solid #6cbe60;
+}
+
+.challenge {
+  background-color: #999;
+  color: white;
+  border: 1px solid #555;
+}
+
+.chapter-list {
+  list-style: none;
+  padding: 0;
+}
+
+.chapter-list li {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px dotted #ccc;
+  padding-bottom: 30px;
+}
+
+.chapter-list a {
+  color: #0000ee;
+  text-decoration: none;
+}
+
+.chapter-list .infos {
+  font-size: 12px;
+  color: #555;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.discussion {
+  color: #999;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.back-link {
+  color: #0000ee;
+  text-decoration: none;
+}
