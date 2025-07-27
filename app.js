@@ -7,10 +7,10 @@ const options = { stats: true };
 compiler.init(options);
 require('dotenv').config();
 
-app.use(bodyP.json());
+const app = express(); // ✅ Doit être déclaré AVANT tout app.use
 
-const app = express();
 app.use(cors());
+app.use(bodyP.json());
 app.use(express.json());
 
 // ✅ Comme `public` est à la racine :
@@ -48,7 +48,7 @@ app.post('/compile', (req, res) => {
   }
 });
 
-// ✅ Plus besoin de `server/` dans le chemin :
+// ✅ Routes principales
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
@@ -57,5 +57,5 @@ app.use('/api/exercises', exercisesRoutes);
 
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
