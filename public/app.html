@@ -21,7 +21,9 @@
           const li = document.createElement('li');
           const link = document.createElement('a');
           link.href = `interfaceCode.html?id=${exo.id}`;
-          li.textContent = `#${exo.id} - ${exo.title}`;
+          link.textContent = `#${exo.id} - ${exo.title}`;
+          link.target = "_blank"; 
+          link.rel = "noopener noreferrer"; 
           li.appendChild(link);
           list.appendChild(li);
         });
