@@ -4,12 +4,12 @@
     <title>Register</title>
     <link rel="stylesheet" href="assets/loginStyle.css">
     <script>
-    $(document).ready(function () {
+    document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("login-form").addEventListener("submit", async function (e) {
         e.preventDefault(); 
 
-        const username = document.getElementById("username").value.trim;
-        const email = document.getElementById("email").value.trim;
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirm-password").value;
 
@@ -30,13 +30,15 @@
         }
 
         try{
-            fetch("/auth/register", {
+            const response = await fetch("/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ username, email, password }),
-        })
+        });
+
+        const data = await response.json();
 
         if (!response.ok) {
         throw new Error(data.error || "Registration failed");
