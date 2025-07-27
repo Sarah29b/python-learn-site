@@ -19,7 +19,10 @@
 
         data.forEach(exo => {
           const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = `interfaceCode.html?id=${exo.id}`;
           li.textContent = `#${exo.id} - ${exo.title}`;
+          li.appendChild(link);
           list.appendChild(li);
         });
 
