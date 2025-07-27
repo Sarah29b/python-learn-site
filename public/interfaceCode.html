@@ -28,9 +28,15 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="../jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" src="../codemirror-5.65.19/lib/codemirror.js"></script>
-    <script type="text/javascript" src="../codemirror-5.65.19/mode/python/python.js"></script>
-    <script type="text/javascript" src="../routes/interfacecode.js"></script>
+    <!-- jQuery depuis CDN -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- CodeMirror depuis CDN jsDelivr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.19/lib/codemirror.css">
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.19/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.19/mode/python/python.js"></script>
+
+<!-- Ton script JS local (doit être dans /public) -->
+<script src="interfacecode.js"></script>
 
 </body>
