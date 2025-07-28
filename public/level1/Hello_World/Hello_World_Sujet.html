@@ -69,7 +69,9 @@
       const res = await fetch(`/api/exo/${id}`);
       const exo = await res.json();
 
-      document.getElementById("story-subject").textContent = exo["story_subject"];
+      document.getElementById("story-subject").innerHTML = exo["story_subject"];
+      document.getElementById("subject").innerHTML = exo["subject"];
+
       document.getElementById("subject").textContent = exo["subject"];
     } catch (e) {
       document.getElementById("story-subject").textContent = "Erreur lors du chargement.";
