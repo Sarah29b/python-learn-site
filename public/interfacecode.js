@@ -36,6 +36,7 @@ $(document).ready(function () {
             });
 
             const result = await response.json();
+            console.log("Résultat brut :", result);
             output.value =
             result.run?.stdout ||
             result.run?.stderr ||
