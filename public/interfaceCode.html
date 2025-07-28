@@ -19,27 +19,51 @@
 
 <body class="bg-light">
   <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="text-primary">Python Code Runner</h1>
-      <div>
-        <button class="btn btn-outline-primary me-2">Sprint Mode</button>
-        <button id="run" class="btn btn-success"><i class="bi bi-play-fill"></i> Run</button>
+    <h1 class="mb-4 text-center text-primary">Python Code Runner</h1>
+
+    <div class="row mb-4">
+      <div class="col text-center">
+        <p class="text-muted">Write your Python code on the left. Provide input if needed. Click "Run" to see the output.</p>
       </div>
     </div>
 
-    <div class="row g-3">
-      <div class="col-md-7">
-        <textarea class="codemirror-textarea"></textarea>
+    <div class="row">
+      <!-- Code editor + buttons -->
+      <div class="col-md-6 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+            <span>Code Editor</span>
+            <div>
+              <button class="btn btn-outline-light btn-sm me-2">Sprint Mode</button>
+              <button id="run" class="btn btn-success btn-sm">
+                <i class="bi bi-play-fill"></i> Run
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <textarea class="codemirror-textarea"></textarea>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-5">
-        <div class="mb-3">
-          <label for="input" class="form-label">Input</label>
-          <textarea id="input" class="form-control" rows="6"></textarea>
+      <!-- Input/Output -->
+      <div class="col-md-6 mb-3">
+        <div class="card mb-3 shadow-sm">
+          <div class="card-header bg-secondary text-white">
+            Input (Optional)
+          </div>
+          <div class="card-body p-0">
+            <textarea id="input" class="form-control border-0" rows="7" placeholder="Enter your input here..."></textarea>
+          </div>
         </div>
-        <div>
-          <label for="output" class="form-label">Output</label>
-          <textarea id="output" class="form-control bg-dark text-light" rows="6" readonly></textarea>
+
+        <div class="card shadow-sm">
+          <div class="card-header bg-dark text-white">
+            Output
+          </div>
+          <div class="card-body p-0">
+            <textarea id="output" class="form-control border-0 bg-black text-success" rows="7" readonly></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -48,7 +72,7 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- Your custom logic -->
+  <!-- Your JS -->
   <script src="interfacecode.js"></script>
 </body>
 </html>
