@@ -13,7 +13,8 @@ $(document).ready(function () {
     const output = document.getElementById("output");
     const run = document.getElementById("run");
 
-    editor.setSize(0.7 * width, "500");
+    editor.setSize("100%", "500px");
+
 
     run.addEventListener("click", async function () {
         const codeToSend = {
