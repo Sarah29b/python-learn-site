@@ -30,20 +30,6 @@
 
       <h2>Ce que doit faire votre programme :</h2>
       <p id="subject">Chargement...</p>
-
-      <p class="attention">
-        <strong>Attention :</strong> s'il y a un espace en trop, s'il y a une majuscule au lieu d'une minuscule, ou s'il y a une quelconque autre différence...
-      </p>
-
-      <div class="box">
-        <div class="box-title">📘 Afficher du texte</div>
-        <p>En Python, pour afficher du texte, on écrit <code>print</code> puis, entre parenthèses, le texte à afficher, entre guillemets.</p>
-        <div class="code-block">
-          <code>print("Bonjour")</code>
-        </div>
-        <p>En effet, <code>print</code> en anglais signifie « imprimer ».</p>
-        <p>Chaque ligne du programme représente une <a href="#">instruction</a>.</p>
-      </div>
     </div>
 
     <!-- Pied de page -->
@@ -60,17 +46,14 @@
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id") || "1";
 
-    if (!id) {
-      document.getElementById("story-subject").textContent = "Erreur : id manquant.";
-      return;
-    }
-
     try {
       const res = await fetch(`/api/exo/${id}`);
       const exo = await res.json();
 
-      document.getElementById("story-subject").textContent = exo["story_subject"];
-      document.getElementById("subject").textContent = exo["subject"];
+      // Injection sécurisée du contenu HTML
+      document.getElementById("story-subject").innerHTML = exo["story_subject"] || "Contenu indisponible.";
+      document.getElementById("subject").innerHTML = exo["subject"] || "Contenu indisponible.";
+      
     } catch (e) {
       document.getElementById("story-subject").textContent = "Erreur lors du chargement.";
       document.getElementById("subject").textContent = "";
