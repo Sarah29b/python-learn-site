@@ -29,7 +29,7 @@ const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
 const exercisesRoutes = require('./routes/exercises');
-app.use('/api/exercises', exercisesRoutes);
+app.use('/api/exo', exercisesRoutes);
 
 // Port Railway
 const PORT =  3000;
