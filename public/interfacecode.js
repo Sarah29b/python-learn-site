@@ -36,7 +36,11 @@ $(document).ready(function () {
             });
 
             const result = await response.json();
-            output.value = result.output || result.stdout || result.stderr || "No output.";
+            output.value =
+            result.run?.stdout ||
+            result.run?.stderr ||
+            result.run?.output ||
+            "No output.";
         } catch (err) {
             console.error("Erreur d'exécution :", err);
             output.value = "Erreur lors de l'exécution.";
