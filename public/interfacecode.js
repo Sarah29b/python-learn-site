@@ -1,28 +1,30 @@
 $(document).ready(function () {
-    // Initialisation de CodeMirror
-    const textarea = $(".codemirror-textarea")[0];
-    const editor = CodeMirror.fromTextArea(textarea, {
-        mode: 'python',
+    const codeElement = $(".codemirror-textarea")[0];
+    const editor = CodeMirror.fromTextArea(codeElement, {
+        mode: "python",
         lineNumbers: true,
-        theme: 'default',
+        theme: "default",
         indentUnit: 4,
         tabSize: 4
     });
 
-    // Redimensionne l'éditeur
     const width = window.innerWidth;
-    editor.setSize(0.7 * width, "500");
-
-    // Récupération des éléments DOM
     const input = document.getElementById("input");
     const output = document.getElementById("output");
     const run = document.getElementById("run");
 
-    // Bouton Run → appel API Piston
+    editor.setSize(0.7 * width, "500");
+
     run.addEventListener("click", async function () {
-        const payload = {
+        const codeToSend = {
             language: "python3",
-            source: editor.getValue(),
+            version: "3.10.0",
+            files: [
+                {
+                    name: "main.py",
+                    content: editor.getValue()
+                }
+            ],
             stdin: input.value
         };
 
@@ -32,18 +34,22 @@ $(document).ready(function () {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(codeToSend)
             });
 
             const result = await response.json();
             console.log("Résultat brut :", result);
-            output.value =
-            result.run?.stdout ||
-            result.run?.stderr ||
-            result.run?.output ||
-            "No output.";
-        } catch (err) {
-            console.error("Erreur d'exécution :", err);
+
+            if (result.run && result.run.stdout) {
+                output.value = result.run.stdout;
+            } else if (result.run && result.run.stderr) {
+                output.value = result.run.stderr;
+            } else {
+                output.value = "Aucune sortie.";
+            }
+
+        } catch (error) {
+            console.error("Erreur de requête :", error);
             output.value = "Erreur lors de l'exécution.";
         }
     });
