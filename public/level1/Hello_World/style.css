@@ -65,6 +65,8 @@ body {
 .content p {
   margin-bottom: 15px;
   line-height: 1.6;
+  text-align: justify;
+
 }
 
 .attention {
@@ -91,7 +93,7 @@ body {
 .code-block {
   background-color: #fff;
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 1px;
   font-family: monospace;
   margin: 10px 0;
 }
