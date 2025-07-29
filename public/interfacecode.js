@@ -26,9 +26,9 @@ $(document).ready(async function () {
         const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
         expectedOutput = (data.correction || "").trim();
-        console.log("Correction loaded:", expectedOutput);
+        console.log("✅ Correction loaded:", expectedOutput);
     } catch (err) {
-        console.error("Error fetching correction:", err);
+        console.error("❌ Error fetching correction:", err);
     }
 
     editor.setSize("100%", "500px");
@@ -50,6 +50,8 @@ $(document).ready(async function () {
             });
 
             const result = await response.json();
+            console.log("▶️ Execution result:", result);
+
             if (result.run && result.run.stdout) {
                 output.value = result.run.stdout;
             } else if (result.run && result.run.stderr) {
@@ -58,13 +60,18 @@ $(document).ready(async function () {
                 output.value = "No output.";
             }
         } catch (error) {
-            console.error("Execution error:", error);
+            console.error("❌ Execution error:", error);
             output.value = "Execution error.";
         }
     });
 
     // ---- Check Answer ----
     check.addEventListener("click", function () {
+        if (!output.value.trim()) {
+            alert("⚠️ Please run your code first before checking!");
+            return;
+        }
+
         attemptCount++;
         if (output.value.trim() === expectedOutput) {
             alert("✅ Correct answer! Well done!");
