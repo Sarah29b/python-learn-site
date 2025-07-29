@@ -1,51 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Hello world!</title>
-  <link rel="stylesheet" href="style.css"> <!-- Assure-toi que le CSS s'appelle bien comme ça -->
+  <meta charset="UTF-8" />
+  <title>Hello world! – Correction</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
+
     <!-- En-tête -->
     <div class="header">
       <button class="badge">Python</button>
-      <h1>✔ Hello world!</h1>
+      <h1 id="title">✔ Hello world!</h1>
       <span class="badge decouverte">Découverte</span>
-
     </div>
 
     <!-- Onglets -->
     <div class="tabs">
-      <button onclick="window.location.href='Hello_World_Sujet.html'">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resoudre.html'">Résoudre</button>
-      <button onclick="window.location.href='Hello_World_Conseils.html'">Conseils</button>
+      <button onclick="window.location.href='Hello_World_Sujet.html?id=1'">Sujet</button>
+      <button onclick="window.location.href='Hello_World_Resource.html?id=1'">Résoudre</button>
+      <button onclick="window.location.href='Hello_World_Conseils.html?id=1'">Conseils</button>
       <button class="active">Correction</button>
     </div>
 
     <!-- Contenu -->
     <div class="content">
-      <h3>Histoire</h3>
-      <p>Votre robot a salué les villageois comme il fallait ; ceux-ci le regardent maintenant avec curiosité mais sans crainte. Vous allez donc pouvoir vous rendre au sommet de la montagne.</p>
+      <h2>Histoire</h2>
+      <p id="story-correction">Chargement...</p>
 
       <h3>Informations</h3>
-      <p>Les corrections montrent pour chaque sujet, une manière simple et élégante de le résoudre, et souvent des explications et conseils pratiques qui vous seront utiles pour la suite.</p>
-      <p>Même si vous avez validé un sujet avec facilité, nous vous conseillons fortement de lire systématiquement la correction.</p>
-      <p>Vous remarquerez que nous y proposons des solutions dans tous les langages que nous prenons en charge ; si vous êtes curieux, vous pouvez ainsi facilement voir comment le même programme s’écrit avec chacun. Nous vous conseillons cependant de vous concentrer sur un seul langage à la fois lors de votre apprentissage.</p>
-
-      <h3>Programme</h3>
-      <p>Il fallait reprendre l'exemple du manuel en utilisant un texte différent, c’est-à-dire <code>Hello world!</code>.</p>
-      <p>Il fallait bien respecter la <em>casse</em>, c’est-à-dire la distinction entre minuscules et majuscules. Il fallait également respecter les espaces et la ponctuation.</p>
+      <p id="correction">Chargement...</p>
 
       <!-- Code -->
       <div class="code-block">
-        <span style="color: purple;">print</span>("Hello world!")
+        <code id="correction-code"></code>
       </div>
 
       <!-- Culture box -->
       <div class="box">
-        <div class="box-title">🗨️ Un peu de culture</div>
-        <p>Afficher le texte <a href="#">Hello world!</a> est traditionnellement ce que l’on expérimente en premier avec un nouvel environnement de programmation.</p>
+        <div class="box-title">📘 Un peu de culture</div>
+        <p id="correction-culture"></p>
       </div>
     </div>
 
@@ -54,8 +48,42 @@
       <a href="../acceuil.html">⬆️</a>
       <strong>Hello world!</strong>
       <span class="badge decouverte">Découverte</span>
-      <a href="../acceuil.html">➡️</a>
+      <a href="#">➡️</a>
     </div>
   </div>
+
+<script>
+  async function fetchCorrection() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "1";
+
+    try {
+      const res = await fetch(`/api/exo/${id}`);
+      const exo = await res.json();
+
+      // Injection sécurisée
+      document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Contenu indisponible.";
+      document.getElementById("correction").innerHTML = exo["correction"] || "Contenu indisponible.";
+      
+      // Exemple pour afficher du code (si tu ajoutes une colonne SQL 'correction_code')
+      if (exo["correction_code"]) {
+        document.getElementById("correction-code").textContent = exo["correction_code"];
+      }
+
+      // Exemple pour afficher un encadré culture (si tu ajoutes 'correction_culture')
+      if (exo["correction_culture"]) {
+        document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
+      }
+
+    } catch (e) {
+      document.getElementById("story-correction").textContent = "Erreur lors du chargement.";
+      document.getElementById("correction").textContent = "";
+      console.error(e);
+    }
+  }
+
+  window.onload = fetchCorrection;
+</script>
+
 </body>
 </html>
