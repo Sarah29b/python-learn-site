@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Hello world! – Conseils</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
     #conseil {
       display: none;
@@ -17,54 +17,66 @@
     <!-- En-tête -->
     <div class="header">
       <button class="badge">Python</button>
-      <h1>✔ Hello world!</h1>
+      <h1 id="title">Hello world!</h1>
       <span class="badge decouverte">Découverte</span>
     </div>
 
     <!-- Onglets -->
     <div class="tabs">
-      <button onclick="window.location.href='Hello_World_Sujet.html'">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resoudre.html'">Résoudre</button>
+      <button onclick="window.location.href='Hello_World_Sujet.html?id=1'">Sujet</button>
+      <button onclick="window.location.href='Hello_World_Resource.html?id=1'">Résoudre</button>
       <button class="active">Conseils</button>
-      <button onclick="window.location.href='Hello_World_Correction.html'">Correction</button>
+      <button onclick="window.location.href='Hello_World_Correction.html?id=1'">Correction</button>
     </div>
 
     <!-- Contenu principal -->
     <div class="content">
       <h3>Conseils</h3>
-      <p>1 conseil disponible :</p>
+      <p id="info">1 conseil disponible :</p>
 
       <button onclick="afficherConseil()">Obtenir un conseil</button>
 
       <div id="conseil">
         <ul>
-          <li>
-            Vérifiez bien à partir des explications que vous n'avez commis aucune erreur.
-            Vérifiez en particulier que vous avez bien écrit le texte :
-            <code class="code-block">Hello world!</code> avec une majuscule au début et un point d'exclamation à la fin.
-          </li>
+          <li id="tip-text">Chargement...</li>
         </ul>
       </div>
 
       <p>Si vous restez bloqué, vous pouvez demander de l'aide ci-dessous.</p>
     </div>
 
-    <!-- Bas de page -->
     <!-- Pied de page -->
     <div class="footer">
       <a href="../acceuil.html">⬆️</a>
       <strong>Hello world!</strong>
       <span class="badge decouverte">Découverte</span>
-      <a href="Hello_World_Correction.html">➡️</a>
+      <a href="#">➡️</a>
     </div>
-
   </div>
 
-  <script>
-    function afficherConseil() {
-      const conseil = document.getElementById("conseil");
-      conseil.style.display = "block";
+<script>
+  async function fetchConseil() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "1";
+
+    try {
+      const res = await fetch(`/api/exo/${id}`);
+      const exo = await res.json();
+
+      // Injecte le conseil depuis PostgreSQL (colonne 'tip')
+      document.getElementById("tip-text").innerHTML = exo["tip"] || "Pas de conseil disponible.";
+    } catch (e) {
+      document.getElementById("tip-text").textContent = "Erreur lors du chargement.";
+      console.error(e);
     }
-  </script>
+  }
+
+  function afficherConseil() {
+    document.getElementById("conseil").style.display = "block";
+  }
+
+  window.onload = fetchConseil;
+</script>
+
 </body>
 </html>
