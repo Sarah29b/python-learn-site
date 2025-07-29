@@ -1,82 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Hello world! – Correction</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <title>Hello world! – Correction</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="container">
+    <div class="container">
 
-    <!-- En-tête -->
-    <div class="header">
-      <button class="badge">Python</button>
-      <h1 id="title">✔ Hello world!</h1>
-      <span class="badge decouverte">Découverte</span>
-    </div>
+        <!-- En-tête -->
+        <div class="header">
+            <button class="badge">Python</button>
+            <h1 id="title">✔ Hello world!</h1>
+            <span class="badge decouverte">Découverte</span>
+        </div>
 
-    <!-- Onglets -->
-    <div class="tabs">
-      <button onclick="window.location.href='Hello_World_Sujet.html?id=1'">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resource.html?id=1'">Résoudre</button>
-      <button onclick="window.location.href='Hello_World_Conseils.html?id=1'">Conseils</button>
-      <button class="active">Correction</button>
-    </div>
+        <!-- Onglets -->
+        <div class="tabs">
+            <button id="tab-sujet">Sujet</button>
+            <button id="tab-resoudre">Résoudre</button>
+            <button id="tab-conseils">Conseils</button>
+            <button class="active">Correction</button>
+        </div>
 
-    <!-- Contenu -->
-    <div class="content">
-      <h2>Histoire</h2>
-      <p id="story-correction">Chargement...</p>
+        <!-- Contenu -->
+        <div class="content">
+            <h2>Histoire</h2>
+            <p id="story-correction">Chargement...</p>
 
-      <h3>Informations</h3>
-      <p id="correction">Chargement...</p>
+            <h3>Informations</h3>
+            <p id="correction">Chargement...</p>
 
-      <!-- Code -->
-      <div class="code-block">
-        <code id="correction-code"></code>
-      </div>
-     
-    <!-- Pied de page -->
-    <div class="footer">
-      <a href="../acceuil.html">⬆️</a>
-      <strong>Hello world!</strong>
-      <span class="badge decouverte">Découverte</span>
-      <a href="#">➡️</a>
-    </div>
-  </div>
+            <!-- Code -->
+            <div class="code-block">
+                <code id="correction-code"></code>
+            </div>
 
-<script>
-  async function fetchCorrection() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "1";
+            <!-- Pied de page -->
+            <div class="footer">
+                <a href="../acceuil.html">⬆️</a>
+                <strong>Hello world!</strong>
+                <span class="badge decouverte">Découverte</span>
+                <a href="#">➡️</a>
+            </div>
+        </div>
 
-    try {
-      const res = await fetch(`/api/exo/${id}`);
-      const exo = await res.json();
+        <script>
+            async function fetchCorrection() {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get("id") || "1";
 
-      // Injection sécurisée
-      document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Contenu indisponible.";
-      document.getElementById("correction").innerHTML = exo["correction"] || "Contenu indisponible.";
-      
-      // Exemple pour afficher du code (si tu ajoutes une colonne SQL 'correction_code')
-      if (exo["correction_code"]) {
-        document.getElementById("correction-code").textContent = exo["correction_code"];
-      }
+                try {
+                    const res = await fetch(`/api/exo/${id}`);
+                    const exo = await res.json();
 
-      // Exemple pour afficher un encadré culture (si tu ajoutes 'correction_culture')
-      if (exo["correction_culture"]) {
-        document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
-      }
+                    // Injection sécurisée
+                    document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Contenu indisponible.";
+                    document.getElementById("correction").innerHTML = exo["correction"] || "Contenu indisponible.";
 
-    } catch (e) {
-      document.getElementById("story-correction").textContent = "Erreur lors du chargement.";
-      document.getElementById("correction").textContent = "";
-      console.error(e);
-    }
-  }
+                    // Exemple pour afficher du code (si tu ajoutes une colonne SQL 'correction_code')
+                    if (exo["correction_code"]) {
+                        document.getElementById("correction-code").textContent = exo["correction_code"];
+                    }
 
-  window.onload = fetchCorrection;
-</script>
+                    // Exemple pour afficher un encadré culture (si tu ajoutes 'correction_culture')
+                    if (exo["correction_culture"]) {
+                        document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
+                    }
+
+                } catch (e) {
+                    document.getElementById("story-correction").textContent = "Erreur lors du chargement.";
+                    document.getElementById("correction").textContent = "";
+                    console.error(e);
+                }
+            }
+
+            window.onload = fetchCorrection;
+        </script>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id") || "1";
+
+            // Met à jour dynamiquement les liens
+            document.getElementById("tab-sujet").onclick = () =>
+                window.location.href = `Hello_World_Sujet.html?id=${id}`;
+
+            document.getElementById("tab-resoudre").onclick = () =>
+                window.location.href = `Hello_World_Resource.html?id=${id}`;
+
+            document.getElementById("tab-conseils").onclick = () =>
+                window.location.href = `Hello_World_Conseils.html?id=${id}`;
+        </script>
 
 </body>
+
 </html>
