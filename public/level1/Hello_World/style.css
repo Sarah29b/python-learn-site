@@ -91,23 +91,12 @@ body {
 }
 
 .code-block {
-  display: block;
-  background-color: #f8f8f8; /* fond gris clair */
-  border: 1px solid #ddd;
-  border-left: 5px solid #ccc; /* petite barre à gauche */
-  padding: 12px;
-  margin: 15px 0;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 15px;
-  white-space: pre-wrap; /* conserve les sauts de ligne */
-  overflow-x: auto; /* scroll horizontal si code trop large */
-  border-radius: 5px;
-}
-
-/* Coloration du mot 'print' en rose */
-.code-block .keyword {
-  color: #e91e63;
-  font-weight: bold;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 1px;
+  font-family: monospace;
+  margin: 10px 0;
+  
 }
 
 /* Notice de bas de page */
