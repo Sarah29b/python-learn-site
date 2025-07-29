@@ -18,9 +18,9 @@
     <!-- Onglets -->
     <div class="tabs">
       <button class="active">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resoudre.html'">Résoudre</button>
-      <button onclick="window.location.href='Hello_World_Conseils.html'">Conseils</button>
-      <button onclick="window.location.href='Hello_World_Correction.html'">Correction</button>
+      <button id="tab-resoudre">Résoudre</button>
+      <button id="tab-conseils">Conseils</button>
+      <button id="tab-correction">Correction</button>
     </div>
 
     <!-- Contenu -->
@@ -42,10 +42,10 @@
   </div>
 
 <script>
-  async function fetchExo() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "1";
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || "1";
 
+  async function fetchExo() {
     try {
       const res = await fetch(`/api/exo/${id}`);
       const exo = await res.json();
@@ -60,6 +60,14 @@
       console.error(e);
     }
   }
+
+  // Mise à jour dynamique des onglets
+  document.getElementById("tab-resoudre").onclick = () =>
+    window.location.href = `Hello_World_Resoudre.html?id=${id}`;
+  document.getElementById("tab-conseils").onclick = () =>
+    window.location.href = `Hello_World_Conseils.html?id=${id}`;
+  document.getElementById("tab-correction").onclick = () =>
+    window.location.href = `Hello_World_Correction.html?id=${id}`;
 
   window.onload = fetchExo;
 </script>

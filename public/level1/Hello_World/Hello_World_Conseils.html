@@ -23,10 +23,10 @@
 
     <!-- Onglets -->
     <div class="tabs">
-      <button onclick="window.location.href='Hello_World_Sujet.html?id=1'">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resource.html?id=1'">Résoudre</button>
+      <button id="tab-sujet">Sujet</button>
+      <button id="tab-resoudre">Résoudre</button>
       <button class="active">Conseils</button>
-      <button onclick="window.location.href='Hello_World_Correction.html?id=1'">Correction</button>
+      <button id="tab-correction">Correction</button>
     </div>
 
     <!-- Contenu principal -->
@@ -55,15 +55,15 @@
   </div>
 
 <script>
-  async function fetchConseil() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "1";
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || "1";
 
+  async function fetchConseil() {
     try {
       const res = await fetch(`/api/exo/${id}`);
       const exo = await res.json();
 
-      // Injecte le conseil depuis PostgreSQL (colonne 'tip')
+      // Injecte le conseil depuis PostgreSQL
       document.getElementById("tip-text").innerHTML = exo["tip"] || "Pas de conseil disponible.";
     } catch (e) {
       document.getElementById("tip-text").textContent = "Erreur lors du chargement.";
@@ -74,6 +74,14 @@
   function afficherConseil() {
     document.getElementById("conseil").style.display = "block";
   }
+
+  // Mise à jour dynamique des onglets
+  document.getElementById("tab-sujet").onclick = () =>
+    window.location.href = `Hello_World_Sujet.html?id=${id}`;
+  document.getElementById("tab-resoudre").onclick = () =>
+    window.location.href = `Hello_World_Resource.html?id=${id}`;
+  document.getElementById("tab-correction").onclick = () =>
+    window.location.href = `Hello_World_Correction.html?id=${id}`;
 
   window.onload = fetchConseil;
 </script>
