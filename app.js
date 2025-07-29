@@ -52,6 +52,56 @@ app.get('/api/exercises/:id', async (req, res) => {
   }
 });
 
+// enregistrer prgress
+app.post('/api/progress', async (req, res) => {
+  try {
+    const { user_id, exercise_id, status } = req.body;
+
+    const existing = await pool.query(
+      'SELECT * FROM completed_exercises WHERE user_id = $1 AND exercise_id = $2',
+      [user_id, exercise_id]
+    );
+
+    if (existing.rows.length > 0) {
+      await pool.query(
+        `UPDATE completed_exercises 
+         SET status = $1, 
+             completed_at = CASE WHEN $1 = 'completed' THEN NOW() ELSE completed_at END 
+         WHERE user_id = $2 AND exercise_id = $3`,
+        [status, user_id, exercise_id]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO completed_exercises (user_id, exercise_id, status, completed_at) 
+         VALUES ($1, $2, $3, CASE WHEN $3 = 'completed' THEN NOW() ELSE NULL END)`,
+        [user_id, exercise_id, status]
+      );
+    }
+
+    res.status(200).json({ message: 'Progress saved successfully' });
+  } catch (error) {
+    console.error('Error saving progress:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.get('/api/progress/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const result = await pool.query(
+      `SELECT exercise_id, status 
+       FROM completed_exercises 
+       WHERE user_id = $1`,
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching progress:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 // Port Railway
 const PORT =  3000;
 app.listen(PORT, '0.0.0.0', () => {
