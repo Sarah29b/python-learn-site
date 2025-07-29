@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(async function () {
     const codeElement = $(".codemirror-textarea")[0];
     const editor = CodeMirror.fromTextArea(codeElement, {
         mode: "python",
@@ -15,7 +15,21 @@ $(document).ready(function () {
     const solution = document.getElementById("solution");
 
     let attemptCount = 0;
-    const expectedOutput = "Hello world!\n"; // À personnaliser
+    let expectedOutput = "";
+
+    // ✅ Récupérer l'ID de l'exercice depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const exerciseId = urlParams.get("id");
+
+    // ✅ Fetch de l'exercice pour obtenir la correction
+    try {
+        const res = await fetch(`/api/exo/${exerciseId}`);
+        const data = await res.json();
+        expectedOutput = (data.correction || "").trim();
+        console.log("Correction loaded:", expectedOutput);
+    } catch (err) {
+        console.error("Error fetching correction:", err);
+    }
 
     editor.setSize("100%", "500px");
 
@@ -52,7 +66,7 @@ $(document).ready(function () {
     // Check answer
     check.addEventListener("click", function () {
         attemptCount++;
-        if (output.value.trim() === expectedOutput.trim()) {
+        if (output.value.trim() === expectedOutput) {
             alert("✅ Correct answer! Well done!");
             attemptCount = 0;
             solution.style.display = "none";
