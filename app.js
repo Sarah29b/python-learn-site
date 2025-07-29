@@ -31,6 +31,26 @@ app.use('/auth', authRoutes);
 const exercisesRoutes = require('./routes/exercises');
 app.use('/api/exo', exercisesRoutes);
 
+//  Nouvelle route pour récupérer la correction
+app.get('/api/exercises/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      'SELECT correction FROM exercises WHERE id = $1',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Exercise not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error fetching correction:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Port Railway
 const PORT =  3000;
 app.listen(PORT, '0.0.0.0', () => {

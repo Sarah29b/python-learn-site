@@ -21,7 +21,7 @@ $(document).ready(async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const exerciseId = urlParams.get("id");
 
-    // ✅ Fetch de l'exercice pour obtenir la correction
+    // ✅ Fetch pour obtenir la correction
     try {
         const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
@@ -33,7 +33,7 @@ $(document).ready(async function () {
 
     editor.setSize("100%", "500px");
 
-    // Run code
+    // ---- Run code ----
     run.addEventListener("click", async function () {
         const codeToSend = {
             language: "python3",
@@ -63,7 +63,7 @@ $(document).ready(async function () {
         }
     });
 
-    // Check answer
+    // ---- Check Answer ----
     check.addEventListener("click", function () {
         attemptCount++;
         if (output.value.trim() === expectedOutput) {
@@ -79,7 +79,7 @@ $(document).ready(async function () {
         }
     });
 
-    // Show solution modal
+    // ---- Show Solution Modal ----
     solution.addEventListener("click", function () {
         document.getElementById("solutionText").textContent = expectedOutput;
         const modal = new bootstrap.Modal(document.getElementById('solutionModal'));
