@@ -15,60 +15,68 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.19/mode/python/python.js"></script>
 </head>
 <body class="bg-light">
+  <div class="container">
+    <!-- En-tête -->
+    <div class="header">
+      <span class="icon">🟩</span>
+      <h1 id="title">Hello world!</h1>
+      <span class="badge decouverte">Découverte</span>
+    </div>
 
-  <!-- ✅ Onglets de navigation -->
-  <div class="tabs">
-    <button onclick="window.location.href='Hello_World_Sujet.html'">Sujet</button>
-    <button class="active">Résoudre</button>
-    <button onclick="window.location.href='Hello_World_Conseils.html'">Conseils</button>
-    <button onclick="window.location.href='Hello_World_Correction.html'">Correction</button>
-  </div>
+    <!-- Onglets -->
+    <div class="tabs">
+      <button class="active">Sujet</button>
+      <button onclick="window.location.href='Hello_World_Resoudre.html'">Résoudre</button>
+      <button onclick="window.location.href='Hello_World_Conseils.html'">Conseils</button>
+      <button onclick="window.location.href='Hello_World_Correction.html'">Correction</button>
+    </div>
 
-  <div class="container py-4">
-    <h1 class="mb-4 text-center text-primary">Solve: Hello World</h1>
-    <p class="text-center text-muted">Write your Python code below, provide input if needed, and click "Run" to see the output.</p>
+    <div class="container py-4">
+      <h1 class="mb-4 text-center text-primary">Solve: Hello World</h1>
+      <p class="text-center text-muted">Write your Python code below, provide input if needed, and click "Run" to see the output.</p>
 
-    <div class="row">
-      <!-- Left: Code editor and buttons -->
-      <div class="col-md-6 mb-3">
-        <div class="card shadow-sm">
-          <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-            <span>Code Editor</span>
-            <div>
-              <button class="btn btn-outline-light btn-sm me-2">Sprint Mode</button>
-              <button id="run" class="btn btn-success btn-sm">
-                <i class="bi bi-play-fill"></i> Run
-              </button>
+      <div class="row">
+        <!-- Left: Code editor and buttons -->
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+              <span>Code Editor</span>
+              <div>
+                <button class="btn btn-outline-light btn-sm me-2">Sprint Mode</button>
+                <button id="run" class="btn btn-success btn-sm">
+                  <i class="bi bi-play-fill"></i> Run
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <textarea class="codemirror-textarea"></textarea>
             </div>
           </div>
-          <div class="card-body p-0">
-            <textarea class="codemirror-textarea"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: Input/Output -->
-      <div class="col-md-6 mb-3">
-        <div class="card mb-3 shadow-sm">
-          <div class="card-header bg-secondary text-white">Input (Optional)</div>
-          <div class="card-body p-0">
-            <textarea id="input" class="form-control border-0" rows="7" placeholder="Enter your input here..."></textarea>
-          </div>
         </div>
 
-        <div class="card shadow-sm">
-          <div class="card-header bg-dark text-white">Output</div>
-          <div class="card-body p-0">
-            <textarea id="output" class="form-control border-0 bg-black text-success" rows="7" readonly></textarea>
+        <!-- Right: Input/Output -->
+        <div class="col-md-6 mb-3">
+          <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-secondary text-white">Input (Optional)</div>
+            <div class="card-body p-0">
+              <textarea id="input" class="form-control border-0" rows="7" placeholder="Enter your input here..."></textarea>
+            </div>
+          </div>
+
+          <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">Output</div>
+            <div class="card-body p-0">
+              <textarea id="output" class="form-control border-0 bg-black text-success" rows="7" readonly></textarea>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- Ton JS -->
-  <script src="../../interfacecode.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Ton JS -->
+    <script src="../../interfacecode.js"></script>
+  </div>
 </body>
 </html>
