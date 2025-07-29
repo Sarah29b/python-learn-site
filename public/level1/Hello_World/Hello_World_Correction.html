@@ -1,61 +1,93 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Hello world!</title>
-  <link rel="stylesheet" href="style.css"> <!-- Assure-toi que le CSS s'appelle bien comme ça -->
+    <meta charset="UTF-8" />
+    <title>Hello world! – Solution</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="container">
-    <!-- En-tête -->
-    <div class="header">
-      <button class="badge">Python</button>
-      <h1>✔ Hello world!</h1>
-      <span class="badge decouverte">Découverte</span>
+    <div class="container">
 
-    </div>
+        <!-- Header -->
+        <div class="header">
+            <button class="badge">Python</button>
+            <h1 id="title">✔ Hello world!</h1>
+            <span class="badge decouverte">Introduction</span>
+        </div>
 
-    <!-- Onglets -->
-    <div class="tabs">
-      <button onclick="window.location.href='Hello_World_Sujet.html'">Sujet</button>
-      <button onclick="window.location.href='Hello_World_Resoudre.html'">Résoudre</button>
-      <button onclick="window.location.href='Hello_World_Conseils.html'">Conseils</button>
-      <button class="active">Correction</button>
-    </div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button id="tab-subject">Subject</button>
+            <button id="tab-solve">Solve</button>
+            <button id="tab-hints">Hints</button>
+            <button class="active">Solution</button>
+        </div>
 
-    <!-- Contenu -->
-    <div class="content">
-      <h3>Histoire</h3>
-      <p>Votre robot a salué les villageois comme il fallait ; ceux-ci le regardent maintenant avec curiosité mais sans crainte. Vous allez donc pouvoir vous rendre au sommet de la montagne.</p>
+        <!-- Content -->
+        <div class="content">
+            <h2>Story</h2>
+            <p id="story-correction">Loading...</p>
 
-      <h3>Informations</h3>
-      <p>Les corrections montrent pour chaque sujet, une manière simple et élégante de le résoudre, et souvent des explications et conseils pratiques qui vous seront utiles pour la suite.</p>
-      <p>Même si vous avez validé un sujet avec facilité, nous vous conseillons fortement de lire systématiquement la correction.</p>
-      <p>Vous remarquerez que nous y proposons des solutions dans tous les langages que nous prenons en charge ; si vous êtes curieux, vous pouvez ainsi facilement voir comment le même programme s’écrit avec chacun. Nous vous conseillons cependant de vous concentrer sur un seul langage à la fois lors de votre apprentissage.</p>
+            <h3>Code</h3>
+            <p id="correction">Loading...</p>
 
-      <h3>Programme</h3>
-      <p>Il fallait reprendre l'exemple du manuel en utilisant un texte différent, c’est-à-dire <code>Hello world!</code>.</p>
-      <p>Il fallait bien respecter la <em>casse</em>, c’est-à-dire la distinction entre minuscules et majuscules. Il fallait également respecter les espaces et la ponctuation.</p>
+            <!-- Footer -->
+            <div class="footer">
+                <a href="../acceuil.html">⬆️</a>
+                <a href="#">➡️</a>
+            </div>
+        </div>
 
-      <!-- Code -->
-      <div class="code-block">
-        <span style="color: purple;">print</span>("Hello world!")
-      </div>
+        <script>
+            async function fetchCorrection() {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get("id") || "1";
 
-      <!-- Culture box -->
-      <div class="box">
-        <div class="box-title">🗨️ Un peu de culture</div>
-        <p>Afficher le texte <a href="#">Hello world!</a> est traditionnellement ce que l’on expérimente en premier avec un nouvel environnement de programmation.</p>
-      </div>
-    </div>
+                try {
+                    const res = await fetch(`/api/exo/${id}`);
+                    const exo = await res.json();
 
-    <!-- Pied de page -->
-    <div class="footer">
-      <a href="../acceuil.html">⬆️</a>
-      <strong>Hello world!</strong>
-      <span class="badge decouverte">Découverte</span>
-      <a href="../acceuil.html">➡️</a>
-    </div>
-  </div>
+                    // Secure HTML injection
+                    document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Content unavailable.";
+                    document.getElementById("correction").innerHTML = exo["correction"] || "Content unavailable.";
+
+                    // Example: Display extra code if you add 'correction_code' column in SQL
+                    if (exo["correction_code"] && document.getElementById("correction-code")) {
+                        document.getElementById("correction-code").textContent = exo["correction_code"];
+                    }
+
+                    // Example: Display cultural note if you add 'correction_culture'
+                    if (exo["correction_culture"] && document.getElementById("correction-culture")) {
+                        document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
+                    }
+
+                } catch (e) {
+                    document.getElementById("story-correction").textContent = "Error while loading.";
+                    document.getElementById("correction").textContent = "";
+                    console.error(e);
+                }
+            }
+
+            window.onload = fetchCorrection;
+        </script>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id") || "1";
+
+            // Dynamically update tab links
+            document.getElementById("tab-subject").onclick = () =>
+                window.location.href = `Hello_World_Sujet.html?id=${id}`;
+
+            document.getElementById("tab-solve").onclick = () =>
+                window.location.href = `Hello_World_Resource.html?id=${id}`;
+
+            document.getElementById("tab-hints").onclick = () =>
+                window.location.href = `Hello_World_Conseils.html?id=${id}`;
+        </script>
+
 </body>
+
 </html>
