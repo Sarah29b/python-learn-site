@@ -1,75 +1,77 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Hello world!</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="container">
 
-    <!-- En-tête -->
+    <!-- Header -->
     <div class="header">
       <span class="icon">🟩</span>
       <h1 id="title">Hello world!</h1>
-      <span class="badge decouverte">Découverte</span>
+      <span class="badge decouverte">Introduction</span>
     </div>
 
-    <!-- Onglets -->
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="active">Sujet</button>
-      <button id="tab-resoudre">Résoudre</button>
-      <button id="tab-conseils">Conseils</button>
-      <button id="tab-correction">Correction</button>
+      <button class="active">Subject</button>
+      <button id="tab-resoudre">Solve</button>
+      <button id="tab-conseils">Hints</button>
+      <button id="tab-correction">Solution</button>
     </div>
 
-    <!-- Contenu -->
+    <!-- Content -->
     <div class="content">
-      <h2>Histoire</h2>
-      <p id="story-subject">Chargement...</p>
+      <h2>Story</h2>
+      <p id="story-subject">Loading...</p>
 
-      <h2>Ce que doit faire votre programme :</h2>
-      <p id="subject">Chargement...</p>
+      <h2>What your program should do:</h2>
+      <p id="subject">Loading...</p>
     </div>
 
-    <!-- Pied de page -->
+    <!-- Footer -->
     <div class="footer">
       <a href="../acceuil.html">⬆️</a>
-
       <a href="#">➡️</a>
     </div>
   </div>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id") || "1";
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "1";
 
-  async function fetchExo() {
-    try {
-      const res = await fetch(`/api/exo/${id}`);
-      const exo = await res.json();
+    async function fetchExo() {
+      try {
+        const res = await fetch(`/api/exo/${id}`);
+        const exo = await res.json();
 
-      // Injection sécurisée du contenu HTML
-      document.getElementById("story-subject").innerHTML = exo["story_subject"] || "Contenu indisponible.";
-      document.getElementById("subject").innerHTML = exo["subject"] || "Contenu indisponible.";
-      
-    } catch (e) {
-      document.getElementById("story-subject").textContent = "Erreur lors du chargement.";
-      document.getElementById("subject").textContent = "";
-      console.error(e);
+        // Secure HTML injection
+        document.getElementById("story-subject").innerHTML = exo["story_subject"] || "Content unavailable.";
+        document.getElementById("subject").innerHTML = exo["subject"] || "Content unavailable.";
+
+      } catch (e) {
+        document.getElementById("story-subject").textContent = "Error while loading.";
+        document.getElementById("subject").textContent = "";
+        console.error(e);
+      }
     }
-  }
 
-  // Mise à jour dynamique des onglets
-  document.getElementById("tab-resoudre").onclick = () =>
-    window.location.href = `Hello_World_Resoudre.html?id=${id}`;
-  document.getElementById("tab-conseils").onclick = () =>
-    window.location.href = `Hello_World_Conseils.html?id=${id}`;
-  document.getElementById("tab-correction").onclick = () =>
-    window.location.href = `Hello_World_Correction.html?id=${id}`;
+    // Update tabs dynamically
+    document.getElementById("tab-resoudre").onclick = () =>
+      window.location.href = `Hello_World_Resoudre.html?id=${id}`;
+    document.getElementById("tab-conseils").onclick = () =>
+      window.location.href = `Hello_World_Conseils.html?id=${id}`;
+    document.getElementById("tab-correction").onclick = () =>
+      window.location.href = `Hello_World_Correction.html?id=${id}`;
 
-  window.onload = fetchExo;
-</script>
+    window.onload = fetchExo;
+  </script>
 
 </body>
+
 </html>

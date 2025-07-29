@@ -1,88 +1,91 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Hello world! – Conseils</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    #conseil {
-      display: none;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Hello world! – Hints</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        #hint {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
+    <div class="container">
 
-    <!-- En-tête -->
-    <div class="header">
-      <button class="badge">Python</button>
-      <h1 id="title">Hello world!</h1>
-      <span class="badge decouverte">Découverte</span>
+        <!-- Header -->
+        <div class="header">
+            <button class="badge">Python</button>
+            <h1 id="title">Hello world!</h1>
+            <span class="badge decouverte">Introduction</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button id="tab-subject">Subject</button>
+            <button id="tab-solve">Solve</button>
+            <button class="active">Hints</button>
+            <button id="tab-solution">Solution</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <h3>Hints</h3>
+            <p id="info">1 hint available:</p>
+
+            <button onclick="showHint()">Get a hint</button>
+
+            <div id="hint">
+                <ul>
+                    <li id="tip-text">Loading...</li>
+                </ul>
+            </div>
+
+            <p>If you remain stuck, you can ask for help below.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <a href="../acceuil.html">⬆️</a>
+            <a href="#">➡️</a>
+        </div>
     </div>
 
-    <!-- Onglets -->
-    <div class="tabs">
-      <button id="tab-sujet">Sujet</button>
-      <button id="tab-resoudre">Résoudre</button>
-      <button class="active">Conseils</button>
-      <button id="tab-correction">Correction</button>
-    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id") || "1";
 
-    <!-- Contenu principal -->
-    <div class="content">
-      <h3>Conseils</h3>
-      <p id="info">1 conseil disponible :</p>
+        async function fetchHint() {
+            try {
+                const res = await fetch(`/api/exo/${id}`);
+                const exo = await res.json();
 
-      <button onclick="afficherConseil()">Obtenir un conseil</button>
+                // Inject hint from PostgreSQL
+                document.getElementById("tip-text").innerHTML = exo["tip"] || "No hint available.";
+            } catch (e) {
+                document.getElementById("tip-text").textContent = "Error while loading.";
+                console.error(e);
+            }
+        }
 
-      <div id="conseil">
-        <ul>
-          <li id="tip-text">Chargement...</li>
-        </ul>
-      </div>
+        function showHint() {
+            document.getElementById("hint").style.display = "block";
+        }
 
-      <p>Si vous restez bloqué, vous pouvez demander de l'aide ci-dessous.</p>
-    </div>
+        // Dynamic tab links
+        document.getElementById("tab-subject").onclick = () =>
+            window.location.href = `Hello_World_Sujet.html?id=${id}`;
+        document.getElementById("tab-solve").onclick = () =>
+            window.location.href = `Hello_World_Resource.html?id=${id}`;
+        document.getElementById("tab-solution").onclick = () =>
+            window.location.href = `Hello_World_Correction.html?id=${id}`;
 
-    <!-- Pied de page -->
-    <div class="footer">
-      <a href="../acceuil.html">⬆️</a>
-      <a href="#">➡️</a>
-    </div>
-  </div>
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id") || "1";
-
-  async function fetchConseil() {
-    try {
-      const res = await fetch(`/api/exo/${id}`);
-      const exo = await res.json();
-
-      // Injecte le conseil depuis PostgreSQL
-      document.getElementById("tip-text").innerHTML = exo["tip"] || "Pas de conseil disponible.";
-    } catch (e) {
-      document.getElementById("tip-text").textContent = "Erreur lors du chargement.";
-      console.error(e);
-    }
-  }
-
-  function afficherConseil() {
-    document.getElementById("conseil").style.display = "block";
-  }
-
-  // Mise à jour dynamique des onglets
-  document.getElementById("tab-sujet").onclick = () =>
-    window.location.href = `Hello_World_Sujet.html?id=${id}`;
-  document.getElementById("tab-resoudre").onclick = () =>
-    window.location.href = `Hello_World_Resource.html?id=${id}`;
-  document.getElementById("tab-correction").onclick = () =>
-    window.location.href = `Hello_World_Correction.html?id=${id}`;
-
-  window.onload = fetchConseil;
-</script>
+        window.onload = fetchHint;
+    </script>
 
 </body>
+
 </html>

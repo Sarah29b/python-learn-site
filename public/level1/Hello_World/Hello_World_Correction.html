@@ -1,39 +1,39 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
-    <title>Hello world! – Correction</title>
+    <title>Hello world! – Solution</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <div class="container">
 
-        <!-- En-tête -->
+        <!-- Header -->
         <div class="header">
             <button class="badge">Python</button>
             <h1 id="title">✔ Hello world!</h1>
-            <span class="badge decouverte">Découverte</span>
+            <span class="badge decouverte">Introduction</span>
         </div>
 
-        <!-- Onglets -->
+        <!-- Tabs -->
         <div class="tabs">
-            <button id="tab-sujet">Sujet</button>
-            <button id="tab-resoudre">Résoudre</button>
-            <button id="tab-conseils">Conseils</button>
-            <button class="active">Correction</button>
+            <button id="tab-subject">Subject</button>
+            <button id="tab-solve">Solve</button>
+            <button id="tab-hints">Hints</button>
+            <button class="active">Solution</button>
         </div>
 
-        <!-- Contenu -->
+        <!-- Content -->
         <div class="content">
-            <h2>Histoire</h2>
-            <p id="story-correction">Chargement...</p>
+            <h2>Story</h2>
+            <p id="story-correction">Loading...</p>
 
             <h3>Code</h3>
-            <p id="correction">Chargement...</p>
+            <p id="correction">Loading...</p>
 
-            <!-- Pied de page -->
+            <!-- Footer -->
             <div class="footer">
                 <a href="../acceuil.html">⬆️</a>
                 <a href="#">➡️</a>
@@ -49,22 +49,22 @@
                     const res = await fetch(`/api/exo/${id}`);
                     const exo = await res.json();
 
-                    // Injection sécurisée
-                    document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Contenu indisponible.";
-                    document.getElementById("correction").innerHTML = exo["correction"] || "Contenu indisponible.";
+                    // Secure HTML injection
+                    document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Content unavailable.";
+                    document.getElementById("correction").innerHTML = exo["correction"] || "Content unavailable.";
 
-                    // Exemple pour afficher du code (si tu ajoutes une colonne SQL 'correction_code')
-                    if (exo["correction_code"]) {
+                    // Example: Display extra code if you add 'correction_code' column in SQL
+                    if (exo["correction_code"] && document.getElementById("correction-code")) {
                         document.getElementById("correction-code").textContent = exo["correction_code"];
                     }
 
-                    // Exemple pour afficher un encadré culture (si tu ajoutes 'correction_culture')
-                    if (exo["correction_culture"]) {
+                    // Example: Display cultural note if you add 'correction_culture'
+                    if (exo["correction_culture"] && document.getElementById("correction-culture")) {
                         document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
                     }
 
                 } catch (e) {
-                    document.getElementById("story-correction").textContent = "Erreur lors du chargement.";
+                    document.getElementById("story-correction").textContent = "Error while loading.";
                     document.getElementById("correction").textContent = "";
                     console.error(e);
                 }
@@ -77,14 +77,14 @@
             const params = new URLSearchParams(window.location.search);
             const id = params.get("id") || "1";
 
-            // Met à jour dynamiquement les liens
-            document.getElementById("tab-sujet").onclick = () =>
+            // Dynamically update tab links
+            document.getElementById("tab-subject").onclick = () =>
                 window.location.href = `Hello_World_Sujet.html?id=${id}`;
 
-            document.getElementById("tab-resoudre").onclick = () =>
+            document.getElementById("tab-solve").onclick = () =>
                 window.location.href = `Hello_World_Resource.html?id=${id}`;
 
-            document.getElementById("tab-conseils").onclick = () =>
+            document.getElementById("tab-hints").onclick = () =>
                 window.location.href = `Hello_World_Conseils.html?id=${id}`;
         </script>
 
