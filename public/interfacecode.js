@@ -23,7 +23,7 @@ $(document).ready(async function () {
 
     // ✅ Fetch de l'exercice pour obtenir la correction
     try {
-        const res = await fetch(`/api/exo/${exerciseId}`);
+        const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
         expectedOutput = (data.correction || "").trim();
         console.log("Correction loaded:", expectedOutput);
