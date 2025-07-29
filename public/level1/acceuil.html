@@ -6,6 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chapter 1</title>
   <link rel="stylesheet" href="style_levels.css" />
+  <style>
+    .status {
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    .completed {
+      color: green;
+    }
+    .in-progress {
+      color: orange;
+    }
+  </style>
 </head>
 
 <body>
@@ -41,9 +53,9 @@
           world!</a></li>
       <li><span class="badge cours">Lesson</span> <a href="Hello_World/Hello_World_Sujet.html?id=2">Output
           representation of a program</a></span></li>
-      <li><span class="badge entrainement">Practice</span> <a href="Hello_World/Hello_World_Sujet.html?id=2">2) Presentation</a></span></li>
+      <li><span class="badge entrainement">Practice</span> <a href="Hello_World/Hello_World_Sujet.html?id=3">2) Presentation</a></span></li>
       <li><span class="badge cours">Lesson</span> <a href="#">Displaying text: possible errors</a></li>
-      <li><span class="badge decouverte">Introduction</span> <a href="Hello_World/Hello_World_Sujet.html?id=2">3)
+      <li><span class="badge decouverte">Introduction</span> <a href="Hello_World/Hello_World_Sujet.html?id=4">3)
           Mountain plan</a></li>
       <li><span class="badge validation">Validation</span> <a href="#">4) In the thicket</a></li>
       <li><span class="badge cours">Lesson</span> <a href="#">Movements: module necessity</a></li>
@@ -58,6 +70,42 @@
       <a href="#">➡️</a>
     </div>
   </div>
+
+  <script>
+    async function loadProgress() {
+      const userId = 1; // 🔑 remplacer par l'ID du user connecté
+      try {
+        const res = await fetch(`/api/progress/${userId}`);
+        const progress = await res.json();
+
+        const statusMap = {};
+        progress.forEach(row => {
+          statusMap[row.exercise_id] = row.status;
+        });
+
+        document.querySelectorAll('.chapter-list a').forEach(link => {
+          const params = new URLSearchParams(link.href.split('?')[1]);
+          const exerciseId = params.get('id');
+          if (exerciseId && statusMap[exerciseId]) {
+            const statusSpan = document.createElement('span');
+            statusSpan.classList.add('status');
+            if (statusMap[exerciseId] === 'completed') {
+              statusSpan.textContent = "✅ Completed";
+              statusSpan.classList.add('completed');
+            } else {
+              statusSpan.textContent = "⏳ In Progress";
+              statusSpan.classList.add('in-progress');
+            }
+            link.parentNode.appendChild(statusSpan);
+          }
+        });
+      } catch (error) {
+        console.error("Error loading progress:", error);
+      }
+    }
+
+    window.onload = loadProgress;
+  </script>
 </body>
 
 </html>

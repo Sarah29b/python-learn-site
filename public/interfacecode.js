@@ -17,9 +17,10 @@ $(document).ready(async function () {
     let attemptCount = 0;
     let expectedOutput = "";
 
-    // ✅ Récupérer l'ID de l'exercice depuis l'URL
+    // ✅ Récupérer l'ID de l'exercice et l'ID de l'utilisateur
     const urlParams = new URLSearchParams(window.location.search);
     const exerciseId = urlParams.get("id");
+    const currentUserId = 1; // 🔑 À remplacer par l'ID du user connecté
 
     // ✅ Fetch pour obtenir la correction
     try {
@@ -73,10 +74,13 @@ $(document).ready(async function () {
         }
 
         attemptCount++;
+        let status = "in_progress";
+
         if (output.value.trim() === expectedOutput) {
             alert("✅ Correct answer! Well done!");
             attemptCount = 0;
             solution.style.display = "none";
+            status = "completed";
         } else {
             alert(`❌ Incorrect. Attempt ${attemptCount}/5`);
         }
@@ -84,6 +88,20 @@ $(document).ready(async function () {
         if (attemptCount >= 5) {
             solution.style.display = "inline-block";
         }
+
+        // ✅ Sauvegarder la progression dans la base
+        fetch("/api/progress", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: currentUserId,
+                exercise_id: exerciseId,
+                status: status
+            })
+        })
+        .then(res => res.json())
+        .then(data => console.log("💾 Progress saved:", data.message))
+        .catch(err => console.error("❌ Error saving progress:", err));
     });
 
     // ---- Show Solution Modal ----
