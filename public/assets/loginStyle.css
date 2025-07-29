@@ -93,3 +93,15 @@ form input[type="password"] {
     color: red;
     margin-left: 2px;
 }
+
+.forgot-password-link {
+    display: inline-block;
+    margin: 8px 0 16px;
+    font-size: 0.9em;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
