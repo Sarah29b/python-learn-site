@@ -16,7 +16,6 @@
 </head>
 <body class="bg-light">
 
-  <!-- ✅ Onglets de navigation -->
   <div class="tabs">
     <button onclick="window.location.href='Hello_World_Sujet.html'">Sujet</button>
     <button class="active">Résoudre</button>
@@ -29,13 +28,15 @@
     <p class="text-center text-muted">Write your Python code below, provide input if needed, and click "Run" to see the output.</p>
 
     <div class="row">
-      <!-- Left: Code editor and buttons -->
       <div class="col-md-6 mb-3">
         <div class="card shadow-sm">
           <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
             <span>Code Editor</span>
             <div>
-              <button class="btn btn-outline-light btn-sm me-2">Sprint Mode</button>
+              <button id="check" class="btn btn-light btn-sm me-2"><i class="bi bi-check2"></i> Check</button>
+              <button id="solution" class="btn btn-warning btn-sm me-2" style="display:none;">
+                <i class="bi bi-eye"></i> Show Solution
+              </button>
               <button id="run" class="btn btn-success btn-sm">
                 <i class="bi bi-play-fill"></i> Run
               </button>
@@ -47,7 +48,6 @@
         </div>
       </div>
 
-      <!-- Right: Input/Output -->
       <div class="col-md-6 mb-3">
         <div class="card mb-3 shadow-sm">
           <div class="card-header bg-secondary text-white">Input (Optional)</div>
@@ -66,9 +66,25 @@
     </div>
   </div>
 
-  <!-- jQuery -->
+  <!-- ✅ Modal Bootstrap -->
+  <div class="modal fade" id="solutionModal" tabindex="-1" aria-labelledby="solutionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="solutionModalLabel">Expected Solution</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="solutionText"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- Ton JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../interfacecode.js"></script>
 </body>
 </html>
