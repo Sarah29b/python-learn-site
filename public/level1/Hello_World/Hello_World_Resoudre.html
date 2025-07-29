@@ -18,8 +18,8 @@
 
   <!-- Tabs -->
     <div class="tabs">
-      <button class="active">Subject</button>
-      <button id="tab-resoudre">Solve</button>
+      <button id="tab-subject">Subject</button>
+      <button class="active">Solve</button>
       <button id="tab-conseils">Hints</button>
       <button id="tab-correction">Solution</button>
     </div>
@@ -92,8 +92,8 @@
     const id = params.get("id") || "1";
 
     // Update tabs dynamically
-    document.getElementById("tab-resoudre").onclick = () =>
-      window.location.href = `Hello_World_Resoudre.html?id=${id}`;
+    document.getElementById("tab-subject").onclick = () =>
+      window.location.href = `Hello_World_Sujet.html?id=${id}`;
     document.getElementById("tab-conseils").onclick = () =>
       window.location.href = `Hello_World_Conseils.html?id=${id}`;
     document.getElementById("tab-correction").onclick = () =>
