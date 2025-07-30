@@ -22,7 +22,7 @@
 
 <body>
   <div class="title">
-    <h1>CHAPTER 1</h1>
+    <h1>Chapters</h1>
   </div>
   <div class="container">
     <h2>Story</h2>
@@ -40,13 +40,9 @@
       keyboard. Once you’ve made your choice, you head toward a site that appears to harbor life.
     </p>
 
-    <h2>Objective of Chapter 1</h2>
+    <h2>Objective</h2>
     <p>You will display text and execute successive operations.</p>
     <hr>
-    <p>
-      To complete this chapter, solve at least all exercises labeled
-      <span class="badge validation">Validation</span>.
-    </p>
 
     <ul class="chapter-list">
       <li><span class="badge decouverte">Introduction</span><a href="Hello_World/Hello_World_Sujet.html?id=1">Hello
@@ -68,7 +64,7 @@
 
   <script>
     async function loadProgress() {
-      const username = localStorage.getItem("username"); // ✅ use username
+      const username = localStorage.getItem("username"); 
       if (!username) {
         console.warn("⚠️ No user logged in");
         return;
