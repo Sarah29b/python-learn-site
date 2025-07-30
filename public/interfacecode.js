@@ -17,20 +17,26 @@ $(document).ready(async function () {
     let attemptCount = 0;
     let expectedOutput = "";
 
+    // ✅ Récupérer l'ID de l'exercice
     const urlParams = new URLSearchParams(window.location.search);
     const exerciseId = urlParams.get("id");
-    const currentUserId = localStorage.getItem("user_id"); // ✅
 
+    // ✅ Récupérer le username (utilisé comme user_id)
+    const currentUsername = localStorage.getItem("username");
+
+    // ✅ Charger la correction depuis la BDD
     try {
         const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
         expectedOutput = (data.correction || "").trim();
+        console.log("Correction loaded:", expectedOutput);
     } catch (err) {
         console.error("Error fetching correction:", err);
     }
 
     editor.setSize("100%", "500px");
 
+    // ▶️ Exécution du code
     run.addEventListener("click", async function () {
         const codeToSend = {
             language: "python3",
@@ -60,7 +66,8 @@ $(document).ready(async function () {
         }
     });
 
-    check.addEventListener("click", function () {
+    // ✅ Vérification de la réponse
+    check.addEventListener("click", async function () {
         if (!output.value.trim()) {
             alert("⚠️ Please run your code first before checking!");
             return;
@@ -82,20 +89,25 @@ $(document).ready(async function () {
             solution.style.display = "inline-block";
         }
 
-        fetch("/api/progress", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user_id: currentUserId,
-                exercise_id: exerciseId,
-                status: status
-            })
-        })
-        .then(res => res.json())
-        .then(data => console.log("Progress saved:", data.message))
-        .catch(err => console.error("Error saving progress:", err));
+        // ✅ Enregistrement progression
+        try {
+            const res = await fetch("/api/progress", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: currentUsername,
+                    exercise_id: exerciseId,
+                    status: status
+                })
+            });
+            const data = await res.json();
+            console.log("Progress saved:", data.message);
+        } catch (err) {
+            console.error("Error saving progress:", err);
+        }
     });
 
+    // 👁️ Affichage de la solution
     solution.addEventListener("click", function () {
         document.getElementById("solutionText").textContent = expectedOutput;
         const modal = new bootstrap.Modal(document.getElementById('solutionModal'));

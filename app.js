@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const pool = require('./db/db');
-
+const pool = require('./db/db'); // ✅ Connexion PostgreSQL
 require('dotenv').config();
 
 const app = express();
@@ -32,7 +31,7 @@ app.use('/auth', authRoutes);
 const exercisesRoutes = require('./routes/exercises');
 app.use('/api/exo', exercisesRoutes);
 
-//  Nouvelle route pour récupérer la correction
+// 🔹 Récupérer la correction d'un exercice
 app.get('/api/exercises/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -52,11 +51,12 @@ app.get('/api/exercises/:id', async (req, res) => {
   }
 });
 
-// enregistrer prgress
+// ✅ Enregistrer la progression
 app.post('/api/progress', async (req, res) => {
   try {
     const { user_id, exercise_id, status } = req.body;
 
+    // Vérifier si l'entrée existe déjà
     const existing = await pool.query(
       'SELECT * FROM completed_exercises WHERE user_id = $1 AND exercise_id = $2',
       [user_id, exercise_id]
@@ -85,15 +85,19 @@ app.post('/api/progress', async (req, res) => {
   }
 });
 
-app.get('/api/progress/:userId', async (req, res) => {
+// ✅ Récupérer la progression d’un utilisateur par son username
+app.get('/api/progress/:username', async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { username } = req.params;
+
+    // On sélectionne directement avec le username
     const result = await pool.query(
       `SELECT exercise_id, status 
        FROM completed_exercises 
        WHERE user_id = $1`,
-      [userId]
+      [username]
     );
+
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching progress:', error);
@@ -101,9 +105,8 @@ app.get('/api/progress/:userId', async (req, res) => {
   }
 });
 
-
 // Port Railway
-const PORT =  3000;
+const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
 });

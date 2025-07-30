@@ -21,7 +21,6 @@
             const data = await res.json();
 
             if (res.ok && data.user) {
-                localStorage.setItem("user_id", data.user.id); // ✅ Save ID
                 localStorage.setItem("username", data.user.username);
                 alert("✅ Registration successful!");
                 window.location.href = "level1/acceuil.html";
