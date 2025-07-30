@@ -17,14 +17,11 @@ $(document).ready(async function () {
     let attemptCount = 0;
     let expectedOutput = "";
 
-    // ✅ Récupérer l'ID de l'exercice
     const urlParams = new URLSearchParams(window.location.search);
     const exerciseId = urlParams.get("id");
 
-    // ✅ Récupérer le username (utilisé comme user_id)
     const currentUsername = localStorage.getItem("username");
 
-    // ✅ Charger la correction depuis la BDD
     try {
         const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
@@ -36,7 +33,6 @@ $(document).ready(async function () {
 
     editor.setSize("100%", "500px");
 
-    // ▶️ Exécution du code
     run.addEventListener("click", async function () {
         const codeToSend = {
             language: "python3",
@@ -66,7 +62,6 @@ $(document).ready(async function () {
         }
     });
 
-    // ✅ Vérification de la réponse
     check.addEventListener("click", async function () {
         if (!output.value.trim()) {
             alert("⚠️ Please run your code first before checking!");
@@ -89,7 +84,6 @@ $(document).ready(async function () {
             solution.style.display = "inline-block";
         }
 
-        // ✅ Enregistrement progression
         try {
             const res = await fetch("/api/progress", {
                 method: "POST",
@@ -107,7 +101,6 @@ $(document).ready(async function () {
         }
     });
 
-    // 👁️ Affichage de la solution
     solution.addEventListener("click", function () {
         document.getElementById("solutionText").textContent = expectedOutput;
         const modal = new bootstrap.Modal(document.getElementById('solutionModal'));

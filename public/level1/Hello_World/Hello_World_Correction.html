@@ -10,13 +10,11 @@
 <body>
     <div class="container">
 
-        <!-- Header -->
         <div class="header">
             <button class="badge">Python</button>
             <h1 id="title">✔ Python-Learn!</h1>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
             <button id="tab-subject">Subject</button>
             <button id="tab-solve">Solve</button>
@@ -24,7 +22,6 @@
             <button class="active">Solution</button>
         </div>
 
-        <!-- Content -->
         <div class="content">
             <h2>Story</h2>
             <p id="story-correction">Loading...</p>
@@ -32,7 +29,6 @@
             <h3>Code</h3>
             <p id="correction">Loading...</p>
 
-            <!-- Footer -->
             <div class="footer">
                 <a href="../acceuil.html">⬆️</a>
                 <a href="#">➡️</a>
@@ -48,16 +44,13 @@
                     const res = await fetch(`/api/exo/${id}`);
                     const exo = await res.json();
 
-                    // Secure HTML injection
                     document.getElementById("story-correction").innerHTML = exo["story_correction"] || "Content unavailable.";
                     document.getElementById("correction").innerHTML = exo["correction"] || "Content unavailable.";
 
-                    // Example: Display extra code if you add 'correction_code' column in SQL
                     if (exo["correction_code"] && document.getElementById("correction-code")) {
                         document.getElementById("correction-code").textContent = exo["correction_code"];
                     }
 
-                    // Example: Display cultural note if you add 'correction_culture'
                     if (exo["correction_culture"] && document.getElementById("correction-culture")) {
                         document.getElementById("correction-culture").innerHTML = exo["correction_culture"];
                     }
@@ -76,7 +69,6 @@
             const params = new URLSearchParams(window.location.search);
             const id = params.get("id") || "1";
 
-            // Dynamically update tab links
             document.getElementById("tab-subject").onclick = () =>
                 window.location.href = `Hello_World_Sujet.html?id=${id}`;
 

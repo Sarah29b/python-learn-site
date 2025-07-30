@@ -13,7 +13,6 @@ body {
   border: 1px solid #ccc;
 }
 
-/* En-tête */
 .header {
   display: flex;
   align-items: center;
@@ -39,7 +38,6 @@ body {
   border: 1px solid #e6c200;
 }
 
-/* Onglets */
 .tabs {
   display: flex;
   margin: 20px 0;
@@ -61,7 +59,6 @@ body {
   background: #ddd;
 }
 
-/* Contenu */
 .content p {
   margin-bottom: 15px;
   line-height: 1.6;
@@ -76,7 +73,6 @@ body {
   font-weight: bold;
 }
 
-/* Encadré violet */
 .box {
   border: 2px solid #660099;
   background-color: #f8f0ff;
@@ -99,7 +95,6 @@ body {
   
 }
 
-/* Notice de bas de page */
 .notice {
   margin-top: 20px;
   font-style: italic;
@@ -107,7 +102,6 @@ body {
   text-align: center;
 }
 
-/* Footer */
 .footer {
   display: flex;
   justify-content: space-between;
@@ -123,6 +117,6 @@ body {
   border-bottom: none;
   color: #000;
   position: relative;
-  top: 1px; /* Pour masquer la bordure du dessous */
+  top: 1px; 
   z-index: 1;
 }
