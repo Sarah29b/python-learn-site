@@ -17,24 +17,20 @@ $(document).ready(async function () {
     let attemptCount = 0;
     let expectedOutput = "";
 
-    // ✅ Récupérer l'ID de l'exercice et l'ID de l'utilisateur
     const urlParams = new URLSearchParams(window.location.search);
     const exerciseId = urlParams.get("id");
-    const currentUserId = 1; // 🔑 À remplacer par l'ID du user connecté
+    const currentUserId = localStorage.getItem("user_id"); // ✅
 
-    // ✅ Fetch pour obtenir la correction
     try {
         const res = await fetch(`/api/exercises/${exerciseId}`);
         const data = await res.json();
         expectedOutput = (data.correction || "").trim();
-        console.log("✅ Correction loaded:", expectedOutput);
     } catch (err) {
-        console.error("❌ Error fetching correction:", err);
+        console.error("Error fetching correction:", err);
     }
 
     editor.setSize("100%", "500px");
 
-    // ---- Run code ----
     run.addEventListener("click", async function () {
         const codeToSend = {
             language: "python3",
@@ -51,8 +47,6 @@ $(document).ready(async function () {
             });
 
             const result = await response.json();
-            console.log("▶️ Execution result:", result);
-
             if (result.run && result.run.stdout) {
                 output.value = result.run.stdout;
             } else if (result.run && result.run.stderr) {
@@ -61,12 +55,11 @@ $(document).ready(async function () {
                 output.value = "No output.";
             }
         } catch (error) {
-            console.error("❌ Execution error:", error);
+            console.error("Execution error:", error);
             output.value = "Execution error.";
         }
     });
 
-    // ---- Check Answer ----
     check.addEventListener("click", function () {
         if (!output.value.trim()) {
             alert("⚠️ Please run your code first before checking!");
@@ -77,7 +70,7 @@ $(document).ready(async function () {
         let status = "in_progress";
 
         if (output.value.trim() === expectedOutput) {
-            alert("✅ Correct answer! Well done!");
+            alert("✅ Correct answer!");
             attemptCount = 0;
             solution.style.display = "none";
             status = "completed";
@@ -89,7 +82,6 @@ $(document).ready(async function () {
             solution.style.display = "inline-block";
         }
 
-        // ✅ Sauvegarder la progression dans la base
         fetch("/api/progress", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -100,11 +92,10 @@ $(document).ready(async function () {
             })
         })
         .then(res => res.json())
-        .then(data => console.log("💾 Progress saved:", data.message))
-        .catch(err => console.error("❌ Error saving progress:", err));
+        .then(data => console.log("Progress saved:", data.message))
+        .catch(err => console.error("Error saving progress:", err));
     });
 
-    // ---- Show Solution Modal ----
     solution.addEventListener("click", function () {
         document.getElementById("solutionText").textContent = expectedOutput;
         const modal = new bootstrap.Modal(document.getElementById('solutionModal'));

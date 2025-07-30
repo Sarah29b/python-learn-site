@@ -4,38 +4,37 @@
     <title>Login</title>
     <link rel="stylesheet" href="assets/loginStyle.css">
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("login-form");
-        form.addEventListener("submit", async function (e) {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            
+
             try {
-                const response = await fetch("/auth/login", {
+            const res = await fetch("/auth/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
             });
+            const data = await res.json();
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || "Login failed");
+            if (res.ok && data.user) {
+                localStorage.setItem("user_id", data.user.id); // ✅ Save ID
+                localStorage.setItem("username", data.user.username);
+                alert("✅ Login successful!");
+                window.location.href = "level1/acceuil.html";
+            } else {
+                alert("❌ Login failed: " + (data.error || "Unknown error"));
             }
-            localStorage.setItem("token", data.token);
-            alert("Logged in!");
-            window.location.href = "level1/acceuil.html";
             } catch (err) {
-                alert(err.message);
-                console.error("Login error:", err);
+            console.error("Login error:", err);
+            alert("Error during login");
             }
-            });
+        });
         });
     </script>
+
 </head>
 <body>
     <header>

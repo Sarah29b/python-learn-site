@@ -73,7 +73,12 @@
 
   <script>
     async function loadProgress() {
-      const userId = 1; // 🔑 remplacer par l'ID du user connecté
+      const userId = localStorage.getItem("user_id"); // ✅ récupère l'ID du user connecté
+      if (!userId) {
+        console.warn("No user logged in");
+        return;
+      }
+
       try {
         const res = await fetch(`/api/progress/${userId}`);
         const progress = await res.json();
@@ -106,6 +111,7 @@
 
     window.onload = loadProgress;
   </script>
+
 </body>
 
 </html>
