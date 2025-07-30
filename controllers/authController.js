@@ -68,15 +68,14 @@ const forgotPassword = async (req, res) => {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    const userId = user.rows[0].id;
     const username = user.rows[0].username;
 
-    const token = jwt.sign({ userId, username }, RESET_SECRET, { expiresIn: '15m' });
+    const token = jwt.sign({username}, RESET_SECRET, { expiresIn: '15m' });
 
     await pool.query(
       `INSERT INTO password_resets (user_id, token, expires_at)
        VALUES ($1, $2, NOW() + interval '15 minutes')`,
-      [userId, token]
+      [username, token]
     );
 
     const resetLink = `${CLIENT_URL}/reset-password.html?token=${token}`;
@@ -112,18 +111,19 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
+
   if (!token || !newPassword) {
     return res.status(400).json({ error: 'Token and password required.' });
   }
 
   try {
     const decoded = jwt.verify(token, RESET_SECRET);
-    const userId = decoded.userId;
+    const username = decoded.username;
 
     const valid = await pool.query(
       `SELECT * FROM password_resets 
        WHERE user_id = $1 AND token = $2 AND expires_at > NOW()`,
-      [userId, token]
+      [username, token]
     );
 
     if (valid.rows.length === 0) {
@@ -131,15 +131,14 @@ const resetPassword = async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, userId]);
-    await pool.query('DELETE FROM password_resets WHERE user_id = $1', [userId]);
+    await pool.query('UPDATE users SET password = $1 WHERE username = $2', [hashed, username]);
+    await pool.query('DELETE FROM password_resets WHERE user_id = $1', [username]);
 
     res.json({ message: 'Password updated.' });
   } catch (err) {
     console.error('Error resetPassword:', err);
     res.status(400).json({ error: 'Token incorrect or expired.' });
   }
-  
 };
 
 module.exports = { registerUser, loginUser, forgotPassword,resetPassword };
