@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const pool = require('../db/db');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 // 🔐 Inscription
 const registerUser = async (req, res) => {
@@ -56,3 +58,89 @@ const loginUser = async (req, res) => {
 
 // ✅ Export
 module.exports = { registerUser, loginUser };
+
+const RESET_SECRET = process.env.RESET_PASSWORD_SECRET || 'reset-secret';
+const CLIENT_URL = 'https://python-learn-site-production.up.railway.app'; 
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) return res.status(400).json({ error: 'Email requis.' });
+
+  try {
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (user.rows.length === 0) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    }
+
+    const userId = user.rows[0].id;
+    const username = user.rows[0].username;
+
+    const token = jwt.sign({ userId, username }, RESET_SECRET, { expiresIn: '15m' });
+
+    await pool.query(
+      `INSERT INTO password_resets (user_id, token, expires_at)
+       VALUES ($1, $2, NOW() + interval '15 minutes')`,
+      [userId, token]
+    );
+
+    const resetLink = `${CLIENT_URL}/reset-password.html?token=${token}`;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: '"PythonLearn" <noreply@pythonlearn.com>',
+      to: email,
+      subject: 'Réinitialisation du mot de passe',
+      html: `
+        <p>Bonjour ${username},</p>
+        <p>Voici le lien pour réinitialiser votre mot de passe :</p>
+        <a href="${resetLink}">${resetLink}</a>
+        <p>Ce lien expire dans 15 minutes.</p>
+      `
+    });
+
+    res.json({ message: 'Email envoyé avec le lien de réinitialisation.' });
+
+  } catch (err) {
+    console.error('Erreur forgotPassword:', err);
+    res.status(500).json({ error: 'Erreur serveur.' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: 'Token et mot de passe requis.' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, RESET_SECRET);
+    const userId = decoded.userId;
+
+    const valid = await pool.query(
+      `SELECT * FROM password_resets 
+       WHERE user_id = $1 AND token = $2 AND expires_at > NOW()`,
+      [userId, token]
+    );
+
+    if (valid.rows.length === 0) {
+      return res.status(400).json({ error: 'Token invalide ou expiré.' });
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, userId]);
+    await pool.query('DELETE FROM password_resets WHERE user_id = $1', [userId]);
+
+    res.json({ message: 'Mot de passe mis à jour avec succès.' });
+  } catch (err) {
+    console.error('Erreur resetPassword:', err);
+    res.status(400).json({ error: 'Token invalide ou expiré.' });
+  }
+};
