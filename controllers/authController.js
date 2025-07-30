@@ -56,9 +56,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Export
-module.exports = { registerUser, loginUser };
-
 const RESET_SECRET = process.env.RESET_PASSWORD_SECRET || 'reset-secret';
 const CLIENT_URL = 'https://python-learn-site-production.up.railway.app'; 
 
@@ -144,3 +141,5 @@ const resetPassword = async (req, res) => {
     res.status(400).json({ error: 'Token invalide ou expiré.' });
   }
 };
+
+module.exports = { registerUser, loginUser, forgotPassword,resetPassword };
