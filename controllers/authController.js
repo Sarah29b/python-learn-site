@@ -3,7 +3,6 @@ const pool = require('../db/db');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
-// 🔐 Inscription
 const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -27,7 +26,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// 🔑 Connexion
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
@@ -51,8 +49,8 @@ const loginUser = async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Erreur lors de la connexion :', err);
-    res.status(500).json({ error: 'Erreur serveur.' });
+    console.error('Connection error :', err);
+    res.status(500).json({ error: 'Error server.' });
   }
 };
 
@@ -67,7 +65,7 @@ const forgotPassword = async (req, res) => {
   try {
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (user.rows.length === 0) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+      return res.status(404).json({ error: 'User not found.' });
     }
 
     const userId = user.rows[0].id;
@@ -85,17 +83,17 @@ const forgotPassword = async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,  // ou 465/587 selon ce que tu préfères
+      port: 2525,  
       auth: {
-        user: process.env.MAILTRAP_USER,  // ou remplace directement ici par ton username Mailtrap
-        pass: process.env.MAILTRAP_PASS    // idem pour le password
+        user: process.env.MAILTRAP_USER,  
+        pass: process.env.MAILTRAP_PASS    
   }
     });
 
     await transporter.sendMail({
       from: '"PythonLearn" <noreply@pythonlearn.com>',
       to: email,
-      subject: 'Réinitialisation du mot de passe',
+      subject: 'Reset password',
       html: `
         <p>Hello ${username},</p>
         <p>This is the link to reinitialize your password :</p>
@@ -115,7 +113,7 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
   if (!token || !newPassword) {
-    return res.status(400).json({ error: 'Token et mot de passe requis.' });
+    return res.status(400).json({ error: 'Token and password required.' });
   }
 
   try {
@@ -129,7 +127,7 @@ const resetPassword = async (req, res) => {
     );
 
     if (valid.rows.length === 0) {
-      return res.status(400).json({ error: 'Token invalide ou expiré.' });
+      return res.status(400).json({ error: 'Token incorrect or expired.' });
     }
 
     const hashed = await bcrypt.hash(newPassword, 10);
@@ -139,8 +137,9 @@ const resetPassword = async (req, res) => {
     res.json({ message: 'Password updated.' });
   } catch (err) {
     console.error('Error resetPassword:', err);
-    res.status(400).json({ error: 'Token invalide ou expiré.' });
+    res.status(400).json({ error: 'Token incorrect or expired.' });
   }
+  
 };
 
 module.exports = { registerUser, loginUser, forgotPassword,resetPassword };
