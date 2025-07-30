@@ -54,7 +54,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const RESET_SECRET = process.env.RESET_PASSWORD_SECRET || 'reset-secret';
+const RESET_SECRET = 'reset-secret';
 const CLIENT_URL = 'https://python-learn-site-production.up.railway.app'; 
 
 const forgotPassword = async (req, res) => {
@@ -139,22 +139,7 @@ const resetPassword = async (req, res) => {
     console.error('Error resetPassword:', err);
     res.status(400).json({ error: 'Token incorrect or expired.' });
   }
-  console.log('Reçu dans body :', { token, newPassword });
-
-const decoded = jwt.verify(token, RESET_SECRET);
-console.log('Payload JWT :', decoded);
-
-const userId = decoded.userId;
-console.log('userId extrait du token :', userId);
-
-const valid = await pool.query(
-  `SELECT * FROM password_resets 
-   WHERE user_id = $1 AND token = $2 AND expires_at > NOW()`,
-  [userId, token]
-);
-
-console.log('Résultat de la requête SQL :', valid.rows);
-
+  
 };
 
 module.exports = { registerUser, loginUser, forgotPassword,resetPassword };
