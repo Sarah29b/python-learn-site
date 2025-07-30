@@ -10,14 +10,12 @@
 <body>
   <div class="container">
 
-    <!-- Header -->
     <div class="header">
       <span class="icon">🟩</span>
       <h1 id="title">Subject !</h1>
 
     </div>
 
-    <!-- Tabs -->
     <div class="tabs">
       <button class="active">Subject</button>
       <button id="tab-resoudre">Solve</button>
@@ -25,7 +23,6 @@
       <button id="tab-correction">Solution</button>
     </div>
 
-    <!-- Content -->
     <div class="content">
       <h2>Story</h2>
       <p id="story-subject">Loading...</p>
@@ -34,7 +31,6 @@
       <p id="subject">Loading...</p>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
       <a href="../acceuil.html">⬆️</a>
       <a href="#">➡️</a>
@@ -50,7 +46,6 @@
         const res = await fetch(`/api/exo/${id}`);
         const exo = await res.json();
 
-        // Secure HTML injection
         document.getElementById("story-subject").innerHTML = exo["story_subject"] || "Content unavailable.";
         document.getElementById("subject").innerHTML = exo["subject"] || "Content unavailable.";
 
@@ -61,7 +56,6 @@
       }
     }
 
-    // Update tabs dynamically
     document.getElementById("tab-resoudre").onclick = () =>
       window.location.href = `Hello_World_Resoudre.html?id=${id}`;
     document.getElementById("tab-conseils").onclick = () =>

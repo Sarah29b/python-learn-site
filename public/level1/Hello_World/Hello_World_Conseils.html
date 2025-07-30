@@ -16,13 +16,11 @@
 <body>
     <div class="container">
 
-        <!-- Header -->
         <div class="header">
             <button class="badge">Python</button>
             <h1 id="title">Python-Learn!</h1>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
             <button id="tab-subject">Subject</button>
             <button id="tab-solve">Solve</button>
@@ -30,7 +28,6 @@
             <button id="tab-solution">Solution</button>
         </div>
 
-        <!-- Main Content -->
         <div class="content">
             <h3>Hints</h3>
             <p id="info">1 hint available:</p>
@@ -45,7 +42,6 @@
 
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <a href="../acceuil.html">⬆️</a>
             <a href="#">➡️</a>
@@ -61,7 +57,6 @@
                 const res = await fetch(`/api/exo/${id}`);
                 const exo = await res.json();
 
-                // Inject hint from PostgreSQL
                 document.getElementById("tip-text").innerHTML = exo["tip"] || "No hint available.";
             } catch (e) {
                 document.getElementById("tip-text").textContent = "Error while loading.";
@@ -73,7 +68,6 @@
             document.getElementById("hint").style.display = "block";
         }
 
-        // Dynamic tab links
         document.getElementById("tab-subject").onclick = () =>
             window.location.href = `Hello_World_Sujet.html?id=${id}`;
         document.getElementById("tab-solve").onclick = () =>

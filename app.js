@@ -1,37 +1,32 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const pool = require('./db/db'); // ✅ Connexion PostgreSQL
+const pool = require('./db/db'); 
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Déclaration du dossier public
 const publicPath = path.join(process.cwd(), 'public');
 console.log('Public path:', publicPath);
 
 app.use(express.static(publicPath));
 
-// Page d'accueil
 app.get('/', (req, res) => {
   res.sendFile('index.html', { root: publicPath });
 });
 
-// Page de code
 app.get('/interfaceCode.html', (req, res) => {
   res.sendFile('interfaceCode.html', { root: publicPath });
 });
 
-// Auth & exercices
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
 const exercisesRoutes = require('./routes/exercises');
 app.use('/api/exo', exercisesRoutes);
 
-// 🔹 Récupérer la correction d'un exercice
 app.get('/api/exercises/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -51,12 +46,10 @@ app.get('/api/exercises/:id', async (req, res) => {
   }
 });
 
-// ✅ Enregistrer la progression
 app.post('/api/progress', async (req, res) => {
   try {
     const { user_id, exercise_id, status } = req.body;
 
-    // Vérifier si l'entrée existe déjà
     const existing = await pool.query(
       'SELECT * FROM completed_exercises WHERE user_id = $1 AND exercise_id = $2',
       [user_id, exercise_id]
@@ -85,12 +78,10 @@ app.post('/api/progress', async (req, res) => {
   }
 });
 
-// ✅ Récupérer la progression d’un utilisateur par son username
 app.get('/api/progress/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    // On sélectionne directement avec le username
     const result = await pool.query(
       `SELECT exercise_id, status 
        FROM completed_exercises 
@@ -105,7 +96,6 @@ app.get('/api/progress/:username', async (req, res) => {
   }
 });
 
-// Port Railway
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
