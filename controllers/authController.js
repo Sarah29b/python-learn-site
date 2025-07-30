@@ -84,11 +84,12 @@ const forgotPassword = async (req, res) => {
     const resetLink = `${CLIENT_URL}/reset-password.html?token=${token}`;
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 2525,  // ou 465/587 selon ce que tu préfères
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        user: process.env.MAILTRAP_USER,  // ou remplace directement ici par ton username Mailtrap
+        pass: process.env.MAILTRAP_PASS    // idem pour le password
+  }
     });
 
     await transporter.sendMail({
@@ -96,18 +97,18 @@ const forgotPassword = async (req, res) => {
       to: email,
       subject: 'Réinitialisation du mot de passe',
       html: `
-        <p>Bonjour ${username},</p>
-        <p>Voici le lien pour réinitialiser votre mot de passe :</p>
+        <p>Hello ${username},</p>
+        <p>This is the link to reinitialize your password :</p>
         <a href="${resetLink}">${resetLink}</a>
-        <p>Ce lien expire dans 15 minutes.</p>
+        <p>This link expires in 15 minutes.</p>
       `
     });
 
-    res.json({ message: 'Email envoyé avec le lien de réinitialisation.' });
+    res.json({ message: 'Email sent with the reinitialization link.' });
 
   } catch (err) {
-    console.error('Erreur forgotPassword:', err);
-    res.status(500).json({ error: 'Erreur serveur.' });
+    console.error('Error forgotPassword:', err);
+    res.status(500).json({ error: 'Error server.' });
   }
 };
 
@@ -135,9 +136,9 @@ const resetPassword = async (req, res) => {
     await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, userId]);
     await pool.query('DELETE FROM password_resets WHERE user_id = $1', [userId]);
 
-    res.json({ message: 'Mot de passe mis à jour avec succès.' });
+    res.json({ message: 'Password updated.' });
   } catch (err) {
-    console.error('Erreur resetPassword:', err);
+    console.error('Error resetPassword:', err);
     res.status(400).json({ error: 'Token invalide ou expiré.' });
   }
 };
