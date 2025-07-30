@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
   try {
     const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (userExists.rows.length > 0) {
-      return res.status(400).json({ error: 'Email déjà utilisé.' });
+      return res.status(400).json({ error: 'email already used.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,11 +18,11 @@ const registerUser = async (req, res) => {
       [username, email, hashedPassword]
     );
 
-    res.status(201).json({ message: 'Inscription réussie', user: newUser.rows[0] });
+    res.status(201).json({ message: 'Registration successful', user: newUser.rows[0] });
 
   } catch (err) {
-    console.error('Erreur lors de l\'inscription :', err);
-    res.status(500).json({ error: 'Erreur serveur.' });
+    console.error('Registration error :', err);
+    res.status(500).json({ error: 'Error server.' });
   }
 };
 
@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
     }
 
     res.status(200).json({
-      message: 'Connexion réussie',
+      message: 'Registration successfull',
       user: {
         username: user.rows[0].username,
         email: user.rows[0].email
@@ -60,7 +60,7 @@ const CLIENT_URL = 'https://python-learn-site-production.up.railway.app';
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
-  if (!email) return res.status(400).json({ error: 'Email requis.' });
+  if (!email) return res.status(400).json({ error: 'Email required.' });
 
   try {
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
